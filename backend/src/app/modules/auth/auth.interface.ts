@@ -2,9 +2,9 @@ export type user = {
   id: string;
   name: string;
   email: string;
-  role: ['admin', 'customer'];
-  contactNo: string;
-  address: string;
-  profileImg: string;
+  role: ['super_admin', 'admin', 'user'];
+  contactNo?: string;
+  address?: string;
+  profileImg?: string;
   password?: string;
 };

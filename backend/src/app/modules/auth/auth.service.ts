@@ -19,10 +19,6 @@ const createAuthUser = async (data: User): Promise<User | null> => {
   data.password = password;
   const result = await prisma.user.create({
     data,
-    include: {
-      orders: true,
-      reviewAndRatings: true,
-    },
   });
 
   if (!result) {
@@ -40,7 +36,7 @@ const loginuser = async (data: any): Promise<any> => {
     },
   });
   if (!isUserExist) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'user not exist');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'user does not exist');
   }
 
   const decriptedPassword = await bcrypt.compare(
