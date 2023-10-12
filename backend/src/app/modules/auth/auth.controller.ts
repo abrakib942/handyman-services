@@ -45,20 +45,9 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// profile
-const getUserProfile = catchAsync(async (req: Request, res: Response) => {
-  const result = await authservices.getUserProfile(req.user);
-  res.send({
-    statusCode: 200,
-    success: true,
-    message: 'User profile information retrive  Successfully',
-    data: result,
-  });
-});
 const authcontroller = {
   createauthUser,
   loginUser,
   refreshToken,
-  getUserProfile,
 };
 export default authcontroller;

@@ -106,36 +106,9 @@ const refreshToken = async (token: string) => {
   };
 };
 
-// profile
-
-const getUserProfile = async (token: any) => {
-  const { role, userId } = token;
-  const result = await prisma.user.findUnique({
-    where: {
-      id: userId,
-      role,
-    },
-
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      contactNo: true,
-      address: true,
-      profileImg: true,
-    },
-  });
-  if (!result) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'user not found');
-  }
-  return result;
-};
-
 const authservices = {
   createAuthUser,
   loginuser,
   refreshToken,
-  getUserProfile,
 };
 export default authservices;
