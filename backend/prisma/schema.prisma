@@ -25,10 +25,10 @@ model User {
 }
 
 model Service {
-  id          String  @id @default(uuid())
-  title       String
+  id          String   @id @default(uuid())
+  title       String   @unique
   heading     String?
-  image       String
+  images      String[]
   description String
 
   reviews   Review[]

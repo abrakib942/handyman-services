@@ -52,7 +52,7 @@ const deleteService = async (id: string): Promise<Service> => {
   return result;
 };
 
-export const CategoryService = {
+export const ServiceService = {
   createService,
   getAllServices,
   getAService,
