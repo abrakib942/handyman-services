@@ -7,7 +7,7 @@ import { Col, Row, message } from "antd";
 import Image from "next/image";
 import CustomForm from "@/components/form/CustomForm";
 import FormInput from "@/components/form/FormInput";
-import loginImage from "@/assets/Login.png";
+import signupImage from "@/assets/signup.png";
 import CustomButton from "@/components/CustomButton";
 import Link from "next/link";
 
@@ -20,7 +20,7 @@ type FormValues = {
   password: string;
 };
 
-const Login = () => {
+const SignUp = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       console.log(data);
@@ -35,19 +35,19 @@ const Login = () => {
         minHeight: "100vh",
       }}
     >
-      <Col sm={12} md={16} lg={10}>
-        <Image src={loginImage} width={500} alt="login image" />
-      </Col>
       <Col sm={12} md={8} lg={8}>
         <h1
           style={{
             margin: "15px 0px",
           }}
         >
-          login your Account
+          Register an Account
         </h1>
         <div>
           <CustomForm submitHandler={onSubmit}>
+            <div>
+              <FormInput name="name" type="text" size="large" label="Name" />
+            </div>
             <div>
               <FormInput name="email" type="email" size="large" label="Email" />
             </div>
@@ -63,20 +63,23 @@ const Login = () => {
                 label="Password"
               />
             </div>
-            <CustomButton htmlType="submit">Login</CustomButton>
+            <CustomButton htmlType="submit">Sign UP</CustomButton>
           </CustomForm>
         </div>
         <div>
           <p>
-            Don't have any Account? Please{" "}
-            <Link href="/signup" style={{ fontWeight: "bold" }}>
-              SignUp
+            Already have an Account? Please{" "}
+            <Link href="/login" style={{ fontWeight: "bold" }}>
+              Login
             </Link>{" "}
           </p>
         </div>
+      </Col>
+      <Col sm={12} md={16} lg={10}>
+        <Image src={signupImage} width={500} alt="login image" />
       </Col>
     </Row>
   );
 };
 
-export default Login;
+export default SignUp;

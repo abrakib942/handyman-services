@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 
-const CustomButton = ({ children, htmlType, onClick, ...rest }: any) => {
+const CustomButton = ({ children, onClick, ...rest }: any) => {
   return (
     <Button
       onClick={onClick}
