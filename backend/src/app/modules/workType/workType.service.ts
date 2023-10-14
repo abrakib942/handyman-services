@@ -18,6 +18,7 @@ const createWorkType = (typeData: WorkType): Promise<WorkType> => {
       cart: true,
       booking: true,
       reviews: true,
+      service: true,
     },
   });
 
@@ -67,6 +68,7 @@ const getAllTypes = async (filters: any, options: IPaginationOptions) => {
       cart: true,
       booking: true,
       reviews: true,
+      service: true,
     },
     where: whereConditions,
     skip,
