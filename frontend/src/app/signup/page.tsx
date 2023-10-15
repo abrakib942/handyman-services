@@ -10,22 +10,44 @@ import FormInput from "@/components/form/FormInput";
 import signupImage from "@/assets/signup.png";
 import CustomButton from "@/components/CustomButton";
 import Link from "next/link";
+import { useUserSignUpMutation } from "@/redux/api/authApi";
+import { useRouter } from "next/navigation";
+import Loading from "../Loading";
 
 export const metaData: Metadata = {
-  title: "Handyman | Login",
+  title: "Handyman | SignUp",
 };
 
 type FormValues = {
-  id: string;
+  name: string;
+  email: string;
   password: string;
 };
 
 const SignUp = () => {
+  const [userSignUp, { isLoading, isSuccess }] = useUserSignUpMutation();
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      console.log(data);
+      const response = await userSignUp({ ...data });
+
+      console.log({ ...data });
     } catch (error) {}
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isSuccess) {
+    message.success({
+      content: "Account Created successfully!",
+      key: "login-loading",
+      duration: 2,
+    });
+    router.push("/login");
+  }
 
   return (
     <Row

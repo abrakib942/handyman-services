@@ -10,22 +10,53 @@ import FormInput from "@/components/form/FormInput";
 import loginImage from "@/assets/Login.png";
 import CustomButton from "@/components/CustomButton";
 import Link from "next/link";
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import Loading from "../Loading";
+import { loginSchema } from "@/schemas/login";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 
 export const metaData: Metadata = {
   title: "Handyman | Login",
 };
 
 type FormValues = {
-  id: string;
+  email: string;
   password: string;
 };
 
 const Login = () => {
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const [userLogin, { isLoading, isSuccess }] = useUserLoginMutation();
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
-      console.log(data);
-    } catch (error) {}
+      const res = await userLogin({ ...data }).unwrap();
+
+      console.log("Data sent to server:", { ...data });
+      console.log("Server response:", res);
+    } catch (error) {
+      message.error({
+        content: "Login failed. Please try again.",
+        key: "login-loading",
+        duration: 2,
+      });
+      console.error("Login error:", error);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isSuccess) {
+    message.success({
+      content: "successfully logged in!",
+      key: "login-loading",
+      duration: 2,
+    });
+    router.push("/");
+  }
 
   return (
     <Row
@@ -47,7 +78,10 @@ const Login = () => {
           login your Account
         </h1>
         <div>
-          <CustomForm submitHandler={onSubmit}>
+          <CustomForm
+            submitHandler={onSubmit}
+            resolver={yupResolver(loginSchema)}
+          >
             <div>
               <FormInput name="email" type="email" size="large" label="Email" />
             </div>
