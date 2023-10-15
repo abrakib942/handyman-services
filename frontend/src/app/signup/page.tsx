@@ -42,7 +42,11 @@ const SignUp = () => {
         });
         router.push("/login");
       }
-    } catch (error) {}
+
+      if (response?.error) {
+        message.error(response?.error?.data?.message);
+      }
+    } catch (error: any) {}
   };
 
   if (isLoading) {

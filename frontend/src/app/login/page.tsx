@@ -34,6 +34,8 @@ const Login = () => {
     try {
       const res: any = await userLogin({ ...data });
 
+      console.log("res", res);
+
       if (!!res?.data?.accessToken) {
         message.success({
           content: "Login successful!",
@@ -44,10 +46,11 @@ const Login = () => {
       }
 
       storeUserInfo({ accessToken: res?.data?.accessToken });
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+
+      if (res?.error) {
+        message.error(res?.error?.data?.message);
+      }
+    } catch (error: any) {}
   };
 
   if (isLoading) {
