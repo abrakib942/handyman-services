@@ -8,7 +8,7 @@ import Image from "next/image";
 import CustomForm from "@/components/form/CustomForm";
 import FormInput from "@/components/form/FormInput";
 import signupImage from "@/assets/signup.png";
-import CustomButton from "@/components/CustomButton";
+import CustomButton from "@/components/ui/CustomButton";
 import Link from "next/link";
 import { useUserSignUpMutation } from "@/redux/api/authApi";
 import { useRouter } from "next/navigation";

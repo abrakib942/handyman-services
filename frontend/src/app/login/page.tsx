@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { SubmitHandler } from "react-hook-form";
 import { Col, Row, message } from "antd";
 import Image from "next/image";
 import CustomForm from "@/components/form/CustomForm";
 import FormInput from "@/components/form/FormInput";
 import loginImage from "@/assets/Login.png";
-import CustomButton from "@/components/CustomButton";
+import CustomButton from "@/components/ui/CustomButton";
 import Link from "next/link";
 import { useUserLoginMutation } from "@/redux/api/authApi";
 import Loading from "../Loading";
