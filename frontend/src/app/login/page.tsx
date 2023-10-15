@@ -15,6 +15,7 @@ import Loading from "../Loading";
 import { loginSchema } from "@/schemas/login";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
+import { storeUserInfo } from "@/services/auth.service";
 
 export const metaData: Metadata = {
   title: "Handyman | Login",
@@ -26,22 +27,26 @@ type FormValues = {
 };
 
 const Login = () => {
-  const [userLogin, { isLoading, isSuccess }] = useUserLoginMutation();
+  const [userLogin, { isLoading }] = useUserLoginMutation();
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
-      const res = await userLogin({ ...data }).unwrap();
+      const res: any = await userLogin({ ...data });
 
-      console.log("Data sent to server:", { ...data });
-      console.log("Server response:", res);
+      if (!!res?.data?.accessToken) {
+        message.success({
+          content: "Login successful!",
+          key: "login-loading",
+          duration: 2,
+        });
+        router.push("/");
+      }
+
+      storeUserInfo({ accessToken: res?.data?.accessToken });
+      console.log(res);
     } catch (error) {
-      message.error({
-        content: "Login failed. Please try again.",
-        key: "login-loading",
-        duration: 2,
-      });
-      console.error("Login error:", error);
+      console.log(error);
     }
   };
 
@@ -49,14 +54,14 @@ const Login = () => {
     return <Loading />;
   }
 
-  if (isSuccess) {
-    message.success({
-      content: "successfully logged in!",
-      key: "login-loading",
-      duration: 2,
-    });
-    router.push("/");
-  }
+  // if (isSuccess) {
+  //   message.success({
+  //     content: "successfully logged in!",
+  //     key: "login-loading",
+  //     duration: 2,
+  //   });
+  //   router.push("/");
+  // }
 
   return (
     <Row

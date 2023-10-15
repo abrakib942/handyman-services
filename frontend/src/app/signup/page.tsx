@@ -13,6 +13,8 @@ import Link from "next/link";
 import { useUserSignUpMutation } from "@/redux/api/authApi";
 import { useRouter } from "next/navigation";
 import Loading from "../Loading";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signUpSchema } from "@/schemas/login";
 
 export const metaData: Metadata = {
   title: "Handyman | SignUp",
@@ -25,28 +27,26 @@ type FormValues = {
 };
 
 const SignUp = () => {
-  const [userSignUp, { isLoading, isSuccess }] = useUserSignUpMutation();
+  const [userSignUp, { isLoading }] = useUserSignUpMutation();
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     try {
-      const response = await userSignUp({ ...data });
+      const response: any = await userSignUp({ ...data });
 
-      console.log({ ...data });
+      if (!!response?.data) {
+        message.success({
+          content: "Account Created successfully!",
+          key: "login-loading",
+          duration: 2,
+        });
+        router.push("/login");
+      }
     } catch (error) {}
   };
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (isSuccess) {
-    message.success({
-      content: "Account Created successfully!",
-      key: "login-loading",
-      duration: 2,
-    });
-    router.push("/login");
   }
 
   return (
@@ -66,7 +66,10 @@ const SignUp = () => {
           Register an Account
         </h1>
         <div>
-          <CustomForm submitHandler={onSubmit}>
+          <CustomForm
+            submitHandler={onSubmit}
+            resolver={yupResolver(signUpSchema)}
+          >
             <div>
               <FormInput name="name" type="text" size="large" label="Name" />
             </div>
