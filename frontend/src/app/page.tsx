@@ -3,6 +3,7 @@
 import Navbar from "@/components/Navbar";
 import Banner from "@/components/home/Banner";
 import BannerBottom from "@/components/home/BannerBottom";
+import HandymanSection from "@/components/home/HandymanSection";
 import Services from "@/components/home/Services";
 import dynamic from "next/dynamic";
 
@@ -13,6 +14,7 @@ function Home() {
       <Banner />
       <BannerBottom />
       <Services />
+      <HandymanSection />
     </>
   );
 }

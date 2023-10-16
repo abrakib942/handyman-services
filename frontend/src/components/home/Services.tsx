@@ -14,8 +14,6 @@ const Services = () => {
     return <Loading />;
   }
 
-  console.log("data", data);
-
   return (
     <div className="my-24 md:px-32 px-8">
       <div className="mb-10">
@@ -29,12 +27,12 @@ const Services = () => {
       </div>
 
       {/* card.. */}
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-10 ">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5 ">
         {data?.slice(0, 8).map((item: any, i: React.Key | null | undefined) => (
           <Card
-            className="hover:bg-[#1c2536] hover:text-[15px] hover:text-white "
+            className="hover:bg-[#1c2536] hover:text-white "
             key={i}
-            hoverable
+            // hoverable
             style={{ width: 250 }}
           >
             <div className="text-center mb-5 hover:text-white">
