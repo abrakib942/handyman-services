@@ -89,6 +89,10 @@
     width: 110%;
   }
 
+  .nav-header {
+    padding: 0 30px 0 4px !important;
+  }
+
   .leftMenu {
     display: none;
   }

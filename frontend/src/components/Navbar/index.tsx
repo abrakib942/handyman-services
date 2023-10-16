@@ -8,12 +8,17 @@ import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { usePathname } from "next/navigation";
 
 import "./navbar.css";
+import CustomButton from "../ui/CustomButton";
+import { isLoggedIn } from "@/services/auth.service";
+import Link from "next/link";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
     setVisible(!visible);
   };
+
+  const userLoggedIn = isLoggedIn();
 
   // If you do not want to auto-close the mobile drawer when a path is selected
   // Delete or comment out the code block below
@@ -25,7 +30,7 @@ const Navbar = () => {
   // Upto here
 
   return (
-    <nav className="navbar">
+    <div className="navbar">
       <Layout>
         <Layout.Header
           style={{
@@ -53,25 +58,32 @@ const Navbar = () => {
             <div className="leftMenu">
               <LeftMenu mode={"horizontal"} />
             </div>
-
-            <div
-              style={{
-                marginRight: "10px",
-                display: "flex",
-              }}
-              className="rightMenu"
-            >
-              <RightMenu mode={"horizontal"} />
-              <div>
-                <ShoppingCartOutlined
+            <>
+              {userLoggedIn ? (
+                <div
                   style={{
-                    fontSize: "25px",
-                    marginTop: "20px",
-                    color: "black",
+                    marginRight: "10px",
+                    display: "flex",
                   }}
-                />
-              </div>
-            </div>
+                  className=""
+                >
+                  <div>
+                    <ShoppingCartOutlined
+                      style={{
+                        fontSize: "25px",
+                        marginTop: "20px",
+                        color: "black",
+                      }}
+                    />
+                  </div>
+                  <RightMenu mode={"horizontal"} />
+                </div>
+              ) : (
+                <Link href="/signup">
+                  <CustomButton>Sign Up</CustomButton>
+                </Link>
+              )}
+            </>
 
             <Drawer
               title={"Handyman Services"}
@@ -87,7 +99,7 @@ const Navbar = () => {
           </div>
         </Layout.Header>
       </Layout>
-    </nav>
+    </div>
   );
 };
 

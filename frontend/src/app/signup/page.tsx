@@ -105,7 +105,7 @@ const SignUp = () => {
         </div>
       </Col>
       <Col sm={12} md={16} lg={10}>
-        <Image src={signupImage} width={500} alt="login image" />
+        <Image src={signupImage} width={400} alt="login image" />
       </Col>
     </Row>
   );
