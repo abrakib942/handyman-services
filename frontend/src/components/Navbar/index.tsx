@@ -32,12 +32,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <Layout>
-        <Layout.Header
-          style={{
-            backgroundColor: "white",
-          }}
-          className="nav-header"
-        >
+        <Layout.Header className="nav-header">
           <div className="navbar-menu">
             <div
               style={{
