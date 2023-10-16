@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Banner from "@/components/home/Banner";
+import BannerBottom from "@/components/home/BannerBottom";
 import dynamic from "next/dynamic";
 
 function Home() {
@@ -7,6 +8,7 @@ function Home() {
     <>
       <Navbar />
       <Banner />
+      <BannerBottom />
     </>
   );
 }

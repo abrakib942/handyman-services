@@ -5,6 +5,7 @@ const LeftMenu = ({ mode }: any) => {
   const items: any = [
     { key: "HOME", label: "HOME", link: "/" },
     { key: "SERVICES", label: "SERVICES", link: "/services" },
+    { key: "SHOP", label: "SHOP", link: "/shop" },
     { key: "BLOG", label: "BLOG", link: "/blog" },
     { key: "ABOUT US", label: "ABOUT US", link: "/about" },
     { key: "CONTACT US", label: "CONTACT US", link: "/contact" },
