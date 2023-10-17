@@ -75,7 +75,9 @@ const getAllTypes = async (filters: any, options: IPaginationOptions) => {
     take: limit,
   });
 
-  const total = await prisma.workType.count();
+  const total = await prisma.workType.count({
+    where: whereConditions,
+  });
 
   return {
     meta: {
