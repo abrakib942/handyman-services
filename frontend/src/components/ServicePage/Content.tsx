@@ -7,29 +7,56 @@ import { useGetAllTypesQuery } from "@/redux/api/workTypeApi";
 import Loading from "@/app/Loading";
 import { useDebounced } from "@/redux/hook";
 import WorkTypeCard from "./WorkTypeCard";
+import { Input, Space } from "antd";
 
 const { Content } = Layout;
+
+const { Search } = Input;
 
 const WorkType = ({ selectedService }: any) => {
   const query: Record<string, any> = {
     serviceId: selectedService ? selectedService.id : null,
   };
 
+  const [page, setPage] = useState<number>(1);
+  const [limit, setlimit] = useState<number>(10);
+  const [sortBy, setSortBy] = useState<string>("");
+  const [sortOrder, setSortOrder] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  query["limit"] = limit;
+  query["page"] = page;
+  query["sortBy"] = sortBy;
+  query["sortOrder"] = sortOrder;
+
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+
+  if (!!debouncedTerm) {
+    query["searchTerm"] = debouncedTerm;
+  }
+
   // Fetch work types based on the selected service
-  const { data, isLoading } = useGetAllTypesQuery(query);
+  const { data, isLoading } = useGetAllTypesQuery({ ...query });
 
   if (isLoading) {
     return <Loading />;
   }
 
   const workTypes = data?.data;
+  console.log(data?.meta, "meta");
 
-  const workTypeServiceId = data?.data.map((item: any) => item.serviceId);
+  const workTypeServiceId = workTypes?.map((item: any) => item);
   console.log("selectedService", selectedService);
-  console.log("worktype", workTypeServiceId);
+  console.log("worktype", workTypes);
 
   return (
-    <Layout className="mt-8" style={{ padding: "0 24px 24px" }}>
+    <Layout
+      className="mt-8"
+      style={{ padding: "0 24px 24px", marginLeft: 200 }}
+    >
       <HSBreadCrumb
         items={[
           {
@@ -46,12 +73,23 @@ const WorkType = ({ selectedService }: any) => {
       <Content
         style={{
           padding: 24,
-          margin: 0,
           minHeight: 400,
+          overflow: "initial",
           background: "white",
         }}
       >
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5">
+        <div className="mb-5">
+          <Search
+            placeholder="Search WorkTypes"
+            allowClear
+            size="large"
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+            style={{ width: 300 }}
+          />
+        </div>
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5 ">
           {/* {workTypeServiceId.map((itemId: any, i: any) => (
             <div key={i}>
               {itemId === selectedService?.id
@@ -72,13 +110,11 @@ const WorkType = ({ selectedService }: any) => {
                   )}
             </div>
           ))} */}
-          {selectedService?.workTypes?.map(
-            (item: any, i: React.Key | null | undefined) => (
-              <div key={i}>
-                <WorkTypeCard item={item} />
-              </div>
-            )
-          )}
+          {workTypes?.map((item: any, i: React.Key | null | undefined) => (
+            <div key={i}>
+              <WorkTypeCard item={item} />
+            </div>
+          ))}
         </div>
       </Content>
     </Layout>

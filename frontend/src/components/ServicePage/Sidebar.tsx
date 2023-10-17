@@ -36,7 +36,17 @@ const Sidebar = ({ handleServiceClick }: any) => {
   }
 
   return (
-    <Sider width={200}>
+    <Sider
+      style={{
+        overflow: "auto",
+        height: "100vh",
+        position: "fixed",
+        left: 0,
+        top: 0,
+        bottom: 0,
+      }}
+      width={200}
+    >
       <Menu
         className="pl-2 font-semibold"
         mode="inline"

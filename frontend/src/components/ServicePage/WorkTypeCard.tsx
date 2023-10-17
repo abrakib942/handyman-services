@@ -12,11 +12,19 @@ const WorkTypeCard = ({ item }: any) => {
       {" "}
       <Card
         hoverable
-        style={{ width: 240 }}
+        style={{ width: 250 }}
         cover={<img alt="" height={200} src={item.images[0]} />}
       >
         <div>
-          <p className="">{item.title}</p>
+          <p className="text-[16px]">{item.title}</p>
+          <p>
+            {" "}
+            from{" "}
+            <span className="text-red-600 font-bold text-lg">
+              {" "}
+              ${item.price}
+            </span>{" "}
+          </p>
 
           <CustomButton>Book</CustomButton>
         </div>
