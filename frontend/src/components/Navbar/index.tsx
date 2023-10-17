@@ -20,9 +20,6 @@ const Navbar = () => {
 
   const userLoggedIn = isLoggedIn();
 
-  // If you do not want to auto-close the mobile drawer when a path is selected
-  // Delete or comment out the code block below
-  // From here
   const pathname = usePathname();
   useEffect(() => {
     setVisible(false);
@@ -31,55 +28,57 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <Layout>
-        <Layout.Header className="nav-header">
-          <div className="navbar-menu">
-            <div
-              style={{
-                marginRight: "10px",
-                display: "flex",
-                fontWeight: "bold",
-                fontSize: "large",
-              }}
-            >
-              <div>
-                <Button className="menuButton" type="text" onClick={showDrawer}>
-                  <MenuOutlined />
-                </Button>
-              </div>
-              <div className="logo">Handyman Services</div>
+      <div className="py-2 lg:px-5 items-center">
+        <div className="navbar-menu">
+          <div
+            style={{
+              marginRight: "10px",
+              display: "flex",
+              alignItems: "center",
+              fontWeight: "bold",
+              fontSize: "large",
+            }}
+          >
+            <div>
+              <Button className="menuButton" type="text" onClick={showDrawer}>
+                <MenuOutlined />
+              </Button>
             </div>
+            <div className="  ">Handyman Services</div>
+          </div>
 
-            <div className="leftMenu">
-              <LeftMenu mode={"horizontal"} />
-            </div>
-            <>
-              {userLoggedIn ? (
-                <div
-                  style={{
-                    marginRight: "10px",
-                    display: "flex",
-                  }}
-                  className=""
-                >
-                  <div>
-                    <ShoppingCartOutlined
-                      style={{
-                        fontSize: "25px",
-                        marginTop: "20px",
-                        color: "black",
-                      }}
-                    />
-                  </div>
-                  <RightMenu mode={"horizontal"} />
+          <div className="leftMenu">
+            <LeftMenu mode={"horizontal"} />
+          </div>
+          <div>
+            {userLoggedIn ? (
+              <div
+                style={{
+                  marginRight: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                className=""
+              >
+                <div>
+                  <ShoppingCartOutlined
+                    style={{
+                      fontSize: "25px",
+                      marginTop: "10px",
+                      color: "black",
+                    }}
+                  />
                 </div>
-              ) : (
-                <Link href="/signup">
-                  <CustomButton>Sign Up</CustomButton>
-                </Link>
-              )}
-            </>
+                <RightMenu mode={"horizontal"} />
+              </div>
+            ) : (
+              <Link href="/signup">
+                <CustomButton>Sign Up</CustomButton>
+              </Link>
+            )}
+          </div>
 
+          <div>
             <Drawer
               title={"Handyman Services"}
               placement="left"
@@ -92,8 +91,8 @@ const Navbar = () => {
               <RightMenu mode={"inline"} />
             </Drawer>
           </div>
-        </Layout.Header>
-      </Layout>
+        </div>
+      </div>
     </div>
   );
 };

@@ -13,7 +13,7 @@
 }
 
 .nav-header {
-  background-color: white;
+  background-color: white !important;
   border-bottom: 0;
   padding: 0 4px 0 24px;
 }
@@ -47,7 +47,7 @@
 .menuButton {
   height: 32px;
   padding: 6px;
-  margin-top: 14px;
+  /* margin-top: 14px; */
   display: none;
   background: none;
   margin-right: 10px;

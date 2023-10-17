@@ -1,3 +1,5 @@
+"use client";
+
 import { Menu, MenuProps } from "antd";
 import Link from "next/link";
 

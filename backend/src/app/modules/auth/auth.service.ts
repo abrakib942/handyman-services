@@ -17,6 +17,17 @@ const createAuthUser = async (data: User): Promise<User | null> => {
     Number(config.bycrypt_salt_rounds)
   );
   data.password = password;
+
+  const isUserExist = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
+
+  if (isUserExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'user already exist');
+  }
+
   const result = await prisma.user.create({
     data,
   });
