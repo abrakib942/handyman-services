@@ -1,7 +1,7 @@
 "use client";
 
 import { Breadcrumb, Layout, Pagination, theme } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import HSBreadCrumb from "../ui/HSBreadCrumb";
 import { useGetAllTypesQuery } from "@/redux/api/workTypeApi";
 import Loading from "@/app/Loading";
@@ -20,14 +20,10 @@ const WorkType = ({ selectedService }: any) => {
 
   const [page, setPage] = useState<number>(1);
   const [limit, setlimit] = useState<number>(8);
-  const [sortBy, setSortBy] = useState<string>("");
-  const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   query["limit"] = limit;
   query["page"] = page;
-  query["sortBy"] = sortBy;
-  query["sortOrder"] = sortOrder;
 
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
@@ -45,18 +41,23 @@ const WorkType = ({ selectedService }: any) => {
   // Fetch work types based on the selected service
   const { data, isLoading } = useGetAllTypesQuery({ ...query });
 
+  //   const types = data?.data;
+
+  const workTypes = selectedService
+    ? selectedService?.workTypes?.filter((workType: any) =>
+        data?.data.some((item: any) => item.id === workType.id)
+      )
+    : data?.data || [];
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedService, searchTerm]);
+
   if (isLoading) {
     return <Loading />;
   }
 
-  const workTypes = data?.data;
   const meta = data?.meta;
-
-  console.log("meta", meta);
-
-  const workTypeServiceId = workTypes?.map((item: any) => item);
-  console.log("selectedService", selectedService);
-  console.log("worktype", workTypes);
 
   return (
     <Layout
@@ -96,26 +97,6 @@ const WorkType = ({ selectedService }: any) => {
           />
         </div>
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5 ">
-          {/* {workTypeServiceId.map((itemId: any, i: any) => (
-            <div key={i}>
-              {itemId === selectedService?.id
-                ? selectedService?.workTypes?.map(
-                    (item: any, i: React.Key | null | undefined) => (
-                      <div key={i}>
-                        <WorkTypeCard item={item} />
-                      </div>
-                    )
-                  )
-                : null ||
-                  workTypes?.map(
-                    (item: any, i: React.Key | null | undefined) => (
-                      <div key={i}>
-                        <WorkTypeCard item={item} />
-                      </div>
-                    )
-                  )}
-            </div>
-          ))} */}
           {workTypes?.map((item: any, i: React.Key | null | undefined) => (
             <div key={i}>
               <WorkTypeCard item={item} />
@@ -124,7 +105,9 @@ const WorkType = ({ selectedService }: any) => {
         </div>
         <div className="mt-6 text-center">
           <Pagination
-            total={meta.total}
+            total={meta?.total || 0}
+            current={page}
+            pageSize={limit}
             showTotal={(total, range) =>
               `${range[0]}-${range[1]} of ${total} items`
             }
