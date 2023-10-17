@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Card } from "antd";
-import Meta from "antd/es/card/Meta";
 import { useGetAllServicesQuery } from "@/redux/api/serviceApi";
 import Loading from "@/app/Loading";
 import ServiceIcons from "./serviceIcons";

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { Layout } from "antd";
 
@@ -9,17 +9,17 @@ import WorkType from "@/components/ServicePage/Content";
 import Navbar from "@/components/Navbar";
 
 const ServicePage = () => {
-  return (
-    <>
-      {/* <div>
-        <Navbar />
-      </div> */}
+  const [selectedService, setSelectedService] = useState(null);
 
-      <Layout>
-        <Sidebar />
-        <WorkType />
-      </Layout>
-    </>
+  const handleServiceClick = (service: any) => {
+    setSelectedService(service);
+  };
+
+  return (
+    <Layout>
+      <Sidebar handleServiceClick={handleServiceClick} />
+      <WorkType selectedService={selectedService} />
+    </Layout>
   );
 };
 

@@ -8,9 +8,6 @@ import React from "react";
 
 const { Sider } = Layout;
 
-//   const key = String(index + 1);
-
-//   return {
 //     key: `sub${key}`,
 //     icon: React.createElement(icon),
 //     label: `subnav ${key}`,
@@ -25,34 +22,32 @@ const { Sider } = Layout;
 //   };
 // });
 
-const Sidebar = () => {
+const Sidebar = ({ handleServiceClick }: any) => {
   const { data, isLoading } = useGetAllServicesQuery(undefined);
+
+  const menuItems = data?.map((item: any, index: any) => (
+    <Menu.Item key={index} onClick={() => handleServiceClick(item)}>
+      {item.title}
+    </Menu.Item>
+  ));
 
   if (isLoading) {
     return <Loading />;
   }
-
-  const menuItems = data?.map((item: any, index: any) => (
-    <Menu.Item key={`menu-${index}`}>{item.title}</Menu.Item>
-  ));
-
-  //   const {
-  //     token: { colorBgContainer },
-  //   } = theme.useToken();
-  // style={{ background: colorBgContainer }}
 
   return (
     <Sider width={200}>
       <Menu
         className="pl-2 font-semibold"
         mode="inline"
-        defaultSelectedKeys={["1"]}
+        defaultSelectedKeys={["all"]}
         defaultOpenKeys={["sub1"]}
         style={{ height: "100%", borderRight: 0 }}
       >
         <div className="my-8 px-6 text-[#ababab]">Services</div>
-        <Menu.Item>All</Menu.Item>
-
+        <Menu.Item key="all" onClick={() => handleServiceClick(null)}>
+          All
+        </Menu.Item>
         {menuItems}
       </Menu>
     </Sider>

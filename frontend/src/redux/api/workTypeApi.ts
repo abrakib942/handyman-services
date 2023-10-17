@@ -3,9 +3,9 @@ import { baseApi } from "./baseApi";
 export const workTypeApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getAllTypes: build.query({
-      query: ({ searchTerm, minPrice, maxPrice, service }) => ({
+      query: (arg: Record<string, any>) => ({
         url: "/workTypes",
-        params: { searchTerm, minPrice, maxPrice, service },
+        params: arg,
         method: "GET",
       }),
     }),
