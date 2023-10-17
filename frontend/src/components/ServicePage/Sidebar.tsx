@@ -4,6 +4,7 @@ import Loading from "@/app/Loading";
 import { useGetAllServicesQuery } from "@/redux/api/serviceApi";
 import { Layout, Menu, theme } from "antd";
 import type { MenuProps } from "antd";
+import Link from "next/link";
 import React from "react";
 
 const { Sider } = Layout;
@@ -26,7 +27,7 @@ const Sidebar = ({ handleServiceClick }: any) => {
   const { data, isLoading } = useGetAllServicesQuery(undefined);
 
   const menuItems = data?.map((item: any, index: any) => (
-    <Menu.Item key={index} onClick={() => handleServiceClick(item)}>
+    <Menu.Item key={index} onClick={() => handleServiceClick(item.id)}>
       {item.title}
     </Menu.Item>
   ));

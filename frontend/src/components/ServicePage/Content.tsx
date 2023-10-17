@@ -14,9 +14,7 @@ const { Content } = Layout;
 const { Search } = Input;
 
 const WorkType = ({ selectedService }: any) => {
-  const query: Record<string, any> = {
-    serviceId: selectedService ? selectedService.id : null,
-  };
+  const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
   const [limit, setlimit] = useState<number>(8);
@@ -39,25 +37,22 @@ const WorkType = ({ selectedService }: any) => {
   }
 
   // Fetch work types based on the selected service
-  const { data, isLoading } = useGetAllTypesQuery({ ...query });
+  const { data, isLoading } = useGetAllTypesQuery({
+    service: selectedService,
+    limit,
+    page,
+    searchTerm: debouncedTerm || undefined,
+  });
 
-  //   const types = data?.data;
-
-  const workTypes = selectedService
-    ? selectedService?.workTypes?.filter((workType: any) =>
-        data?.data.some((item: any) => item.id === workType.id)
-      )
-    : data?.data || [];
-
-  useEffect(() => {
-    setPage(1);
-  }, [selectedService, searchTerm]);
+  const workTypes = data?.data;
 
   if (isLoading) {
     return <Loading />;
   }
 
   const meta = data?.meta;
+
+  console.log("total", meta?.total);
 
   return (
     <Layout
