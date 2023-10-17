@@ -24,7 +24,7 @@ export const serviceApi = baseApi.injectEndpoints({
     updateService: build.mutation({
       query: (data) => ({
         url: `/services/${data.id}`,
-        method: "POST",
+        method: "PATCH",
         data: data.data,
       }),
     }),
