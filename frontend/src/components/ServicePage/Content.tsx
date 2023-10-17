@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumb, Layout, theme } from "antd";
+import { Breadcrumb, Layout, Pagination, theme } from "antd";
 import React, { useState } from "react";
 import HSBreadCrumb from "../ui/HSBreadCrumb";
 import { useGetAllTypesQuery } from "@/redux/api/workTypeApi";
@@ -19,7 +19,7 @@ const WorkType = ({ selectedService }: any) => {
   };
 
   const [page, setPage] = useState<number>(1);
-  const [limit, setlimit] = useState<number>(10);
+  const [limit, setlimit] = useState<number>(8);
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -28,6 +28,10 @@ const WorkType = ({ selectedService }: any) => {
   query["page"] = page;
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
+
+  const handlePageChange = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
 
   const debouncedTerm = useDebounced({
     searchQuery: searchTerm,
@@ -46,7 +50,9 @@ const WorkType = ({ selectedService }: any) => {
   }
 
   const workTypes = data?.data;
-  console.log(data?.meta, "meta");
+  const meta = data?.meta;
+
+  console.log("meta", meta);
 
   const workTypeServiceId = workTypes?.map((item: any) => item);
   console.log("selectedService", selectedService);
@@ -115,6 +121,17 @@ const WorkType = ({ selectedService }: any) => {
               <WorkTypeCard item={item} />
             </div>
           ))}
+        </div>
+        <div className="mt-6 text-center">
+          <Pagination
+            total={meta.total}
+            showTotal={(total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`
+            }
+            defaultPageSize={8}
+            onChange={handlePageChange}
+            showQuickJumper
+          />
         </div>
       </Content>
     </Layout>
