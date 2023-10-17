@@ -9,6 +9,7 @@ import HandymanSection from "@/components/home/HandymanSection";
 import Services from "@/components/home/Services";
 import SummarySection from "@/components/home/SummarySection";
 import Testimonials from "@/components/home/Testimonials";
+import WorksSection from "@/components/home/WorksSection";
 import dynamic from "next/dynamic";
 
 function Home() {
@@ -20,6 +21,7 @@ function Home() {
       <Services />
       <HandymanSection />
       <SummarySection />
+      <WorksSection />
       <Testimonials />
       <ContactSection />
       <Footer />
