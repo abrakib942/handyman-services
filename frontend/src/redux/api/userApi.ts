@@ -1,3 +1,4 @@
+import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 export const userApi = baseApi.injectEndpoints({
@@ -7,14 +8,14 @@ export const userApi = baseApi.injectEndpoints({
         url: "/user",
         method: "GET",
       }),
-      providesTags: ["updateUser", "user", "deleteUser"],
+      providesTags: [tagTypes.user],
     }),
     getSingleUser: build.query({
       query: (userId) => ({
         url: `/user/${userId}`,
         method: "GET",
       }),
-      providesTags: ["updateUser", "user", "deleteUser"],
+      providesTags: [tagTypes.user],
     }),
     updateUser: build.mutation({
       query: (data) => ({
@@ -22,14 +23,14 @@ export const userApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.data,
       }),
-      invalidatesTags: ["updateUser"],
+      invalidatesTags: [tagTypes.user],
     }),
     deleteUser: build.mutation({
       query: (id) => ({
         url: `/user/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["deleteUser"],
+      invalidatesTags: [tagTypes.user],
     }),
     getUserProfile: build.query({
       query: () => ({

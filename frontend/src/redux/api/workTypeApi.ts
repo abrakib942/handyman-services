@@ -1,3 +1,4 @@
+import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 export const workTypeApi = baseApi.injectEndpoints({
@@ -8,12 +9,14 @@ export const workTypeApi = baseApi.injectEndpoints({
         params: arg,
         method: "GET",
       }),
+      providesTags: [tagTypes.workType],
     }),
     getSingleType: build.query({
       query: (id) => ({
         url: `/workTypes/${id}`,
         method: "GET",
       }),
+      providesTags: [tagTypes.workType],
     }),
     createWorkType: build.mutation({
       query: (data) => ({
@@ -21,6 +24,7 @@ export const workTypeApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: [tagTypes.workType],
     }),
     updateWorkType: build.mutation({
       query: (data) => ({
@@ -28,18 +32,21 @@ export const workTypeApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.data,
       }),
+      invalidatesTags: [tagTypes.workType],
     }),
     deleteWorkType: build.mutation({
       query: (id) => ({
         url: `/workTypes/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: [tagTypes.workType],
     }),
     getTypesByServiceId: build.query({
       query: (serviceId) => ({
         url: `/workTypes/${serviceId}`,
         method: "GET",
       }),
+      providesTags: [tagTypes.workType],
     }),
   }),
 });

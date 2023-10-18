@@ -1,18 +1,22 @@
+import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 export const serviceApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getAllServices: build.query({
-      query: () => ({
+      query: (arg: Record<string, any>) => ({
         url: "/services",
+        params: arg,
         method: "GET",
       }),
+      providesTags: [tagTypes.service],
     }),
     getSingleService: build.query({
       query: (id) => ({
         url: `/services/${id}`,
         method: "GET",
       }),
+      providesTags: [tagTypes.service],
     }),
     createService: build.mutation({
       query: (data) => ({
@@ -20,6 +24,7 @@ export const serviceApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
+      invalidatesTags: [tagTypes.service],
     }),
     updateService: build.mutation({
       query: (data) => ({
@@ -27,12 +32,14 @@ export const serviceApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.data,
       }),
+      invalidatesTags: [tagTypes.service],
     }),
     deleteService: build.mutation({
       query: (id) => ({
         url: `/services/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: [tagTypes.service],
     }),
   }),
 });
