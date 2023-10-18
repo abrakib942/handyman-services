@@ -49,4 +49,5 @@ export const {
   useCreateServiceMutation,
   useGetSingleServiceQuery,
   useDeleteServiceMutation,
+  useUpdateServiceMutation,
 } = serviceApi;

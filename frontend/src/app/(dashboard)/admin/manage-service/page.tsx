@@ -19,6 +19,7 @@ import DataTable from "@/components/ui/DataTable";
 import HSBreadCrumb from "@/components/ui/HSBreadCrumb";
 import CustomModal from "@/components/ui/CustomModal";
 import CustomButton from "@/components/ui/CustomButton";
+import { getUserInfo } from "@/services/auth.service";
 
 const ManageServicePage = () => {
   const query: Record<string, any> = {};
@@ -32,6 +33,8 @@ const ManageServicePage = () => {
   const [serviceId, setServiceId] = useState<string>("");
 
   const [deleteService] = useDeleteServiceMutation();
+
+  const { role } = getUserInfo() as any;
 
   query["limit"] = size;
   query["page"] = page;
@@ -109,7 +112,7 @@ const ManageServicePage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={``}>
+            <Link href={`/${role}/manage-service/edit/${data}`}>
               <Button
                 style={{
                   margin: "0px 5px",
