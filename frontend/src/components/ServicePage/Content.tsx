@@ -52,13 +52,8 @@ const WorkType = ({ selectedService }: any) => {
 
   const meta = data?.meta;
 
-  console.log("total", meta?.total);
-
   return (
-    <Layout
-      className="mt-5"
-      style={{ padding: "0 24px 24px", marginLeft: 200 }}
-    >
+    <Layout className="mt-5" style={{ padding: "0 24px 24px" }}>
       <HSBreadCrumb
         items={[
           {

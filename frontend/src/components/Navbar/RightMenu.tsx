@@ -17,7 +17,7 @@ const RightMenu = ({ mode }: any) => {
     router.push("/login");
   };
 
-  const { userId } = getUserInfo() as any;
+  const { userId, role } = getUserInfo() as any;
 
   return (
     <Menu mode={mode}>
@@ -35,6 +35,11 @@ const RightMenu = ({ mode }: any) => {
         <Menu.Item key="profile">
           <Link href={`/profile/${userId}`}>
             <UserOutlined /> Profile
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="dashboard">
+          <Link href={`/${role}`}>
+            <CodeOutlined /> Dashboard
           </Link>
         </Menu.Item>
         <Menu.Item onClick={logOut} key="log-out">

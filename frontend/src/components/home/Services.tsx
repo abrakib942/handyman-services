@@ -5,13 +5,20 @@ import { Card } from "antd";
 import { useGetAllServicesQuery } from "@/redux/api/serviceApi";
 import Loading from "@/app/Loading";
 import ServiceIcons from "./serviceIcons";
+import { useRouter } from "next/navigation";
 
 const Services = () => {
   const { data, isLoading } = useGetAllServicesQuery(undefined);
 
+  const router = useRouter();
+
   if (isLoading) {
     return <Loading />;
   }
+
+  const handleClick = () => {
+    router.push("/services");
+  };
 
   return (
     <div className="my-24 md:px-32 px-8">
@@ -29,7 +36,8 @@ const Services = () => {
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-5 ">
         {data?.slice(0, 8).map((item: any, i: React.Key | null | undefined) => (
           <Card
-            className="hover:bg-[#1c2536] hover:text-white "
+            onClick={handleClick}
+            className="hover:bg-[#1c2536] hover:text-white cursor-pointer"
             key={i}
             // hoverable
             style={{ width: 250 }}

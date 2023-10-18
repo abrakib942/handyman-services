@@ -41,7 +41,7 @@ const Sidebar = ({ handleServiceClick }: any) => {
       style={{
         overflow: "auto",
         height: "100vh",
-        position: "fixed",
+        position: "sticky",
         left: 0,
         top: 0,
         bottom: 0,
@@ -49,7 +49,7 @@ const Sidebar = ({ handleServiceClick }: any) => {
       width={200}
     >
       <Menu
-        className="pl-2 font-semibold mt-3"
+        className="pl-2 font-semibold"
         mode="inline"
         defaultSelectedKeys={["all"]}
         defaultOpenKeys={["sub1"]}
