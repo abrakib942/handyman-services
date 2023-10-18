@@ -9,8 +9,8 @@ export const userApi = baseApi.injectEndpoints({
       }),
     }),
     getSingleUser: build.query({
-      query: (id) => ({
-        url: `/user/${id}`,
+      query: (userId) => ({
+        url: `/user/${userId}`,
         method: "GET",
       }),
     }),
@@ -27,6 +27,13 @@ export const userApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    getUserProfile: build.query({
+      query: () => ({
+        url: "/user/user-profile",
+        // params: { role, userId },
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -35,4 +42,5 @@ export const {
   useGetSingleUserQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useGetUserProfileQuery,
 } = userApi;
