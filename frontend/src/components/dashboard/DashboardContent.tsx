@@ -8,15 +8,6 @@ const { Content } = Layout;
 const DashboardContent = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout className="mt-5" style={{ padding: "0 24px 24px" }}>
-      <HSBreadCrumb
-        items={[
-          {
-            label: "dashboard",
-            link: "/dashboard",
-          },
-        ]}
-      />
-
       <Content
         style={{
           padding: 24,

@@ -7,7 +7,8 @@ import WorkTypeCard from "../ServicePage/WorkTypeCard";
 import Link from "next/link";
 
 const WorksSection = ({ handleServiceClick }: any) => {
-  const { data, isLoading } = useGetAllServicesQuery(undefined);
+  const query: Record<string, any> = {};
+  const { data, isLoading } = useGetAllServicesQuery({ ...query });
 
   if (isLoading) {
     return <Loading />;
@@ -30,7 +31,7 @@ const WorksSection = ({ handleServiceClick }: any) => {
           defaultActiveKey="0"
           onChange={handleServiceClick}
         >
-          {data?.map((item: any, index: number) => (
+          {data?.data?.map((item: any, index: number) => (
             <Tabs.TabPane tab={item.title} key={index}>
               <HomeWorkTypes item={item} />
             </Tabs.TabPane>

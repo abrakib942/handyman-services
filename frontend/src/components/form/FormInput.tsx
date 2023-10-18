@@ -2,28 +2,30 @@
 
 import { getErrorMessageByPropertyName } from "@/utils/schema-validator";
 import { Input } from "antd";
-import { Controller, useFormContext } from "react-hook-form";
-
+import { spawn } from "child_process";
+import { useFormContext, Controller } from "react-hook-form";
 interface IInput {
-  type?: string;
   name: string;
+  type?: string;
   size?: "large" | "small";
   value?: string | string[] | undefined;
   id?: string;
   placeholder?: string;
   validation?: object;
   label?: string;
+  required?: boolean;
 }
 
 const FormInput = ({
   name,
   type,
-  size,
+  size = "large",
   value,
   id,
   placeholder,
   validation,
   label,
+  required,
 }: IInput) => {
   const {
     control,
@@ -34,6 +36,15 @@ const FormInput = ({
 
   return (
     <>
+      {required ? (
+        <span
+          style={{
+            color: "red",
+          }}
+        >
+          *
+        </span>
+      ) : null}
       {label ? label : null}
       <Controller
         control={control}

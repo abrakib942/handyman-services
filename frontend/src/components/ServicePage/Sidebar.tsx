@@ -9,24 +9,12 @@ import React from "react";
 
 const { Sider } = Layout;
 
-//     key: `sub${key}`,
-//     icon: React.createElement(icon),
-//     label: `subnav ${key}`,
-
-//     children: new Array(4).fill(null).map((_, j) => {
-//       const subKey = index * 4 + j + 1;
-//       return {
-//         key: subKey,
-//         label: `option${subKey}`,
-//       };
-//     }),
-//   };
-// });
-
 const Sidebar = ({ handleServiceClick }: any) => {
-  const { data, isLoading } = useGetAllServicesQuery(undefined);
+  const query: Record<string, any> = {};
 
-  const menuItems = data?.map((item: any, index: any) => (
+  const { data, isLoading } = useGetAllServicesQuery({ ...query });
+
+  const menuItems = data?.data?.map((item: any, index: any) => (
     <Menu.Item key={index} onClick={() => handleServiceClick(item.id)}>
       {item.title}
     </Menu.Item>

@@ -34,8 +34,6 @@ const Login = () => {
     try {
       const res: any = await userLogin({ ...data });
 
-      console.log("res", res);
-
       if (!!res?.data?.accessToken) {
         message.success({
           content: "Login successful!",
