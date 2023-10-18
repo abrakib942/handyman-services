@@ -11,11 +11,12 @@ export type ITypeFilterRequest = {
   service?: string;
 };
 
-const addToBooking = (typeData: Booking): Promise<Booking> => {
+const addToBooking = (bookingData: Booking): Promise<Booking> => {
   const result = prisma.booking.create({
-    data: typeData,
+    data: bookingData,
     include: {
       workType: true,
+      user: true,
     },
   });
 
@@ -58,6 +59,7 @@ const getAllBookings = async (filters: any, options: IPaginationOptions) => {
   const result = await prisma.booking.findMany({
     include: {
       workType: true,
+      user: true,
     },
     where: whereConditions,
     skip,
@@ -85,6 +87,7 @@ const getSingleBooking = async (id: string): Promise<Booking | null> => {
     },
     include: {
       workType: true,
+      user: true,
     },
   });
   return result;
@@ -101,6 +104,7 @@ const updateBooking = async (
     data: payload,
     include: {
       workType: true,
+      user: true,
     },
   });
   return result;

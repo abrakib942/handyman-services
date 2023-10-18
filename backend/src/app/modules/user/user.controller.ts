@@ -54,6 +54,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 // profile
 const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getUserProfile(req.user);
+
   res.send({
     statusCode: 200,
     success: true,

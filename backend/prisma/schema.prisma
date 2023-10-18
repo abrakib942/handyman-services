@@ -22,6 +22,8 @@ model User {
   cart       Cart[]
   reviews    Review[]
   booking    Booking[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Service {
@@ -34,6 +36,9 @@ model Service {
   reviews   Review[]
   booking   Booking[]
   workTypes WorkType[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model WorkType {
@@ -47,6 +52,9 @@ model WorkType {
   cart        Cart[]
   reviews     Review[]
   booking     Booking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cart {
@@ -56,6 +64,9 @@ model Cart {
   userId     String
   workType   WorkType @relation(fields: [workTypeId], references: [id])
   workTypeId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Review {
@@ -68,6 +79,9 @@ model Review {
   serviceId  String
   WorkType   WorkType? @relation(fields: [workTypeId], references: [id])
   workTypeId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Booking {
@@ -80,6 +94,9 @@ model Booking {
   status     BookingStatus @default(pending)
   workType   WorkType      @relation(fields: [workTypeId], references: [id])
   workTypeId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum UserRoles {

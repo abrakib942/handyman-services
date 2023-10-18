@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { ServiceService } from './service.service';
+import pick from '../../../shared/pick';
 
 const createService = catchAsync(async (req: Request, res: Response) => {
   const result = await ServiceService.createService(req.body);
@@ -15,7 +16,10 @@ const createService = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllServices = catchAsync(async (req: Request, res: Response) => {
-  const result = await ServiceService.getAllServices();
+  const filters = pick(req.query, ['searchTerm', 'title']);
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+
+  const result = await ServiceService.getAllServices(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

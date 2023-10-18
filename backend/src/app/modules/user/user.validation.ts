@@ -25,8 +25,19 @@ const loginUserZodSchema = z.object({
     }),
   }),
 });
+const updateUserZodSchema = z.object({
+  body: z.object({
+    email: z.string().optional(),
+    name: z.string().optional(),
+    address: z.string().optional(),
+    contactNo: z.string().optional(),
+    profileImg: z.string().optional(),
+    role: z.enum(['user', 'admin', 'super_admin']).optional(),
+  }),
+});
 
 export const UserValidation = {
   signUpUserZodSchema,
   loginUserZodSchema,
+  updateUserZodSchema,
 };

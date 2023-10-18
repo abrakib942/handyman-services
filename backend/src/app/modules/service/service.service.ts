@@ -1,5 +1,7 @@
-import { Service } from '@prisma/client';
+import { Prisma, Service } from '@prisma/client';
 import prisma from '../../../shared/prisma';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { IPaginationOptions } from '../../../interfaces/pagination';
 
 const createService = (serviceData: Service): Promise<Service> => {
   const result = prisma.service.create({
@@ -9,16 +11,54 @@ const createService = (serviceData: Service): Promise<Service> => {
   return result;
 };
 
-const getAllServices = async () => {
+const getAllServices = async (filters: any, options: IPaginationOptions) => {
+  const searchableFields = ['title'];
+
+  const { page, limit, skip } = paginationHelpers.calculatePagination(options);
+  const { searchTerm, title } = filters;
+  const andConditons = [];
+
+  if (searchTerm) {
+    andConditons.push({
+      OR: searchableFields.map(field => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    });
+  }
+
+  const whereConditions: Prisma.ServiceWhereInput =
+    andConditons.length > 0 ? { AND: andConditons } : {};
+
+  if (title) {
+    whereConditions.title = title;
+  }
+
   const result = await prisma.service.findMany({
     include: {
       workTypes: true,
       booking: true,
       reviews: true,
     },
+    where: whereConditions,
+    skip,
+    take: limit,
   });
 
-  return result;
+  const total = await prisma.service.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  };
 };
 
 const getAService = async (id: string): Promise<Service | null> => {
