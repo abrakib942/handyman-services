@@ -4,11 +4,40 @@ import FormInput from "../form/FormInput";
 import { SubmitHandler } from "react-hook-form";
 import TextArea from "antd/es/input/TextArea";
 import CustomButton from "../ui/CustomButton";
+import { useUpdateUserMutation } from "@/redux/api/userApi";
+import Loading from "@/app/Loading";
+import { message } from "antd";
 
-const ProfileEditForm = () => {
+const ProfileEditForm = ({ userData, userId }: any) => {
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    console.log(data);
+    try {
+      const updatedData = {
+        id: userId,
+        data: { ...data },
+      };
+
+      const res: any = await updateUser(updatedData);
+      message.loading("Updating...");
+
+      if (res?.data) {
+        setTimeout(() => {
+          message.success("Updated");
+        }, 2000);
+      } else {
+        setTimeout(() => {
+          message.error("Failed to Update. Try Again");
+        }, 2000);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div>
@@ -24,7 +53,8 @@ const ProfileEditForm = () => {
                   name="name"
                   type="text"
                   size="large"
-                  label="Your Name"
+                  placeholder={userData?.name}
+                  label="Full Name"
                 />
               </div>
 
@@ -33,7 +63,8 @@ const ProfileEditForm = () => {
                   name="email"
                   type="email"
                   size="large"
-                  label="Your Email"
+                  placeholder={userData?.email}
+                  label="Email"
                 />
               </div>
             </div>
@@ -41,32 +72,30 @@ const ProfileEditForm = () => {
             <div className="flex items-center">
               <div className="w-full md:w-1/2 p-2">
                 <FormInput
-                  name="text"
+                  name="address"
                   type="text"
                   size="large"
-                  label="Subject"
+                  placeholder={userData?.address}
+                  label="Address"
                 />
               </div>
               <div className="w-full md:w-1/2 p-2">
-                <FormInput name="text" type="text" size="large" label="Phone" />
+                <FormInput
+                  name="contactNo"
+                  type="text"
+                  placeholder={userData?.contactNo}
+                  size="large"
+                  label="Contact No"
+                />
               </div>
             </div>
-            <div className="w-full p-2">
-              <TextArea
-                rows={4}
-                placeholder="Your Message"
-                showCount
-                maxLength={300}
-                style={{ height: 120, marginBottom: 24 }}
-              />
-            </div>
+          </div>
+          <div className="text-center">
+            <CustomButton className="" htmlType="submit">
+              Update
+            </CustomButton>
           </div>
         </CustomForm>
-        <div className="text-center">
-          <CustomButton className="" htmlType="submit">
-            Update
-          </CustomButton>
-        </div>
       </div>
     </div>
   );

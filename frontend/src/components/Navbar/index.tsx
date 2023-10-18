@@ -29,7 +29,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className=" py-2 lg:px-5">
-        <div className="flex justify-around ">
+        <div className="flex justify-evenly ">
           <div
             style={{
               marginRight: "10px",

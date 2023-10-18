@@ -23,9 +23,24 @@ const SideCard = ({ userData }: any) => {
             {userData?.email}
           </p>
         </div>
-        <div className="mt-12 ">
-          <p> {userData?.contactNo}</p>
-          <p> {userData?.address}</p>
+        <div className="mt-12 text-center">
+          {userData?.address ? (
+            <p className="text-sm">
+              {" "}
+              From- <span>{userData?.address}</span>
+            </p>
+          ) : (
+            ""
+          )}
+
+          {userData?.contactNo ? (
+            <p className="text-sm">
+              {" "}
+              cell- <span>{userData?.contactNo}</span>
+            </p>
+          ) : (
+            ""
+          )}
         </div>
         <p></p>
       </div>

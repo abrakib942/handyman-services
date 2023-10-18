@@ -52,7 +52,6 @@ const WorkTypeCard = ({ item }: any) => {
 
       setModalVisible(false);
     } catch (err: any) {
-      console.error(err.message);
       message.error("Failed to create booking");
     }
   };

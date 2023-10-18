@@ -13,10 +13,6 @@ const ProfilePage = ({ params }: { params: any }) => {
 
   const { data: userData, isLoading } = useGetSingleUserQuery(userId);
 
-  console.log("data", userData);
-
-  console.log("id", userId);
-
   if (isLoading) {
     return <Loading />;
   }
@@ -29,7 +25,7 @@ const ProfilePage = ({ params }: { params: any }) => {
             <SideCard userData={userData} />
           </div>
           <div className="md:w-[65%] bg-white h-[100vh] rounded-xl">
-            <ProfileEditForm />
+            <ProfileEditForm userId={userId} userData={userData} />
           </div>
         </div>
       </div>

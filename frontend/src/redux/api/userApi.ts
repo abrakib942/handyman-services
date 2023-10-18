@@ -7,12 +7,14 @@ export const userApi = baseApi.injectEndpoints({
         url: "/user",
         method: "GET",
       }),
+      providesTags: ["updateUser", "user", "deleteUser"],
     }),
     getSingleUser: build.query({
       query: (userId) => ({
         url: `/user/${userId}`,
         method: "GET",
       }),
+      providesTags: ["updateUser", "user", "deleteUser"],
     }),
     updateUser: build.mutation({
       query: (data) => ({
@@ -20,12 +22,14 @@ export const userApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.data,
       }),
+      invalidatesTags: ["updateUser"],
     }),
     deleteUser: build.mutation({
       query: (id) => ({
         url: `/user/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["deleteUser"],
     }),
     getUserProfile: build.query({
       query: () => ({
