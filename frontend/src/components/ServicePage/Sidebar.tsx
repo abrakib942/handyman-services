@@ -49,7 +49,7 @@ const Sidebar = ({ handleServiceClick }: any) => {
       width={200}
     >
       <Menu
-        className="pl-2 font-semibold"
+        className="pl-2 font-semibold mt-3"
         mode="inline"
         defaultSelectedKeys={["all"]}
         defaultOpenKeys={["sub1"]}

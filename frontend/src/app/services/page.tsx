@@ -7,6 +7,7 @@ import { Layout } from "antd";
 import Sidebar from "@/components/ServicePage/Sidebar";
 import WorkType from "@/components/ServicePage/Content";
 import Navbar from "@/components/Navbar";
+import dynamic from "next/dynamic";
 
 const ServicePage = () => {
   const [selectedService, setSelectedService] = useState(null);
@@ -16,11 +17,14 @@ const ServicePage = () => {
   };
 
   return (
-    <Layout>
-      <Sidebar handleServiceClick={handleServiceClick} />
-      <WorkType selectedService={selectedService} />
-    </Layout>
+    <>
+      <Navbar />
+      <Layout>
+        <Sidebar handleServiceClick={handleServiceClick} />
+        <WorkType selectedService={selectedService} />
+      </Layout>
+    </>
   );
 };
 
-export default ServicePage;
+export default dynamic(() => Promise.resolve(ServicePage), { ssr: false });

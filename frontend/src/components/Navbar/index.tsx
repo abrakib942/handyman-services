@@ -28,8 +28,8 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
-      <div className="py-2 lg:px-5 items-center">
-        <div className="navbar-menu">
+      <div className=" py-2 lg:px-5">
+        <div className="flex justify-evenly ">
           <div
             style={{
               marginRight: "10px",
@@ -50,7 +50,7 @@ const Navbar = () => {
           <div className="leftMenu">
             <LeftMenu mode={"horizontal"} />
           </div>
-          <div>
+          <div className="">
             {userLoggedIn ? (
               <div
                 style={{

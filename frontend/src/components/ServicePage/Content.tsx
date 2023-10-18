@@ -56,7 +56,7 @@ const WorkType = ({ selectedService }: any) => {
 
   return (
     <Layout
-      className="mt-8"
+      className="mt-5"
       style={{ padding: "0 24px 24px", marginLeft: 200 }}
     >
       <HSBreadCrumb
