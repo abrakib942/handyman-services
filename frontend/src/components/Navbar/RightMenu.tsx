@@ -3,9 +3,10 @@
 import React from "react";
 import { Menu, Avatar } from "antd";
 import { UserOutlined, CodeOutlined, LogoutOutlined } from "@ant-design/icons";
-import { removeUserInfo } from "@/services/auth.service";
+import { getUserInfo, removeUserInfo } from "@/services/auth.service";
 import { authKey } from "@/constants/storageKey";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const RightMenu = ({ mode }: any) => {
   const router = useRouter();
@@ -15,6 +16,8 @@ const RightMenu = ({ mode }: any) => {
 
     router.push("/login");
   };
+
+  const { userId } = getUserInfo() as any;
 
   return (
     <Menu mode={mode}>
@@ -29,8 +32,10 @@ const RightMenu = ({ mode }: any) => {
         {/* <Menu.Item key="project">
           <CodeOutlined /> Projects
         </Menu.Item> */}
-        <Menu.Item key="about-us">
-          <UserOutlined /> Profile
+        <Menu.Item key="profile">
+          <Link href={`/profile/${userId}`}>
+            <UserOutlined /> Profile
+          </Link>
         </Menu.Item>
         <Menu.Item onClick={logOut} key="log-out">
           <LogoutOutlined /> Logout
