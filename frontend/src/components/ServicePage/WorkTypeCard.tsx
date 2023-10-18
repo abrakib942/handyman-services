@@ -1,6 +1,8 @@
 import { Card, Modal, DatePicker, TimePicker, InputNumber } from "antd";
 import React, { useState } from "react";
 import CustomButton from "../ui/CustomButton";
+import { isLoggedIn } from "@/services/auth.service";
+import { authKey } from "@/constants/storageKey";
 
 const WorkTypeCard = ({ item }: any) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -25,6 +27,8 @@ const WorkTypeCard = ({ item }: any) => {
     setModalVisible(false);
   };
 
+  const loginUser = isLoggedIn();
+
   return (
     <div>
       <Card
@@ -37,12 +41,16 @@ const WorkTypeCard = ({ item }: any) => {
           <p>
             {" "}
             from{" "}
-            <span className="text-red-600 font-bold text-lg">
+            <span className="text-red-500 font-bold text-lg">
               ${item.price}
             </span>{" "}
           </p>
 
-          <CustomButton onClick={handleBookClick}>Book</CustomButton>
+          {loginUser ? (
+            <CustomButton onClick={handleBookClick}>Book</CustomButton>
+          ) : (
+            <p className="text-red-500">*Please login for book</p>
+          )}
         </div>
       </Card>
 
