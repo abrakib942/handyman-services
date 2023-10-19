@@ -11,9 +11,7 @@ import FormTextArea from "../form/FormTextArea";
 import TextArea from "antd/es/input/TextArea";
 
 const ContactSection = () => {
-  const onSubmit: SubmitHandler<any> = async (data: any) => {
-    console.log(data);
-  };
+  const onSubmit: SubmitHandler<any> = async (data: any) => {};
 
   return (
     <div className="bg-[#E3F1FF] py-10 px-10 lg:px-24 lg:flex items-center justify-center gap-10 ">

@@ -49,13 +49,12 @@ const EditServicePage = ({ params }: any) => {
   const onSubmit = async (data: any) => {
     try {
       const res: any = await updateWorkType({ id: params?.id, data: data });
-      console.log("resda", res);
+
       if (res?.data) {
         message.success("WorkType updated successfully!");
 
         router.push(`/${role}/manage-workType`);
       } else if (res?.error) {
-        console.log(res.error);
         message.error(res?.error?.data?.message);
       }
     } catch (err: any) {

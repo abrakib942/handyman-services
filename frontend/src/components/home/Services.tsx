@@ -14,8 +14,6 @@ const Services = () => {
 
   const router = useRouter();
 
-  console.log("daafd", data);
-
   if (isLoading) {
     return <Loading />;
   }

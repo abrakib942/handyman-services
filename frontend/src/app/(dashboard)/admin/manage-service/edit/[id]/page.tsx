@@ -25,8 +25,6 @@ const EditServicePage = ({ params }: any) => {
 
   const { data } = useGetSingleServiceQuery(params?.id);
 
-  console.log("sing", data);
-
   const { role } = getUserInfo() as any;
 
   const router = useRouter();

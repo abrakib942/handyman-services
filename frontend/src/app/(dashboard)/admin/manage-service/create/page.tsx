@@ -29,8 +29,6 @@ const ServiceCreatePage = () => {
       if (res?.data) {
         message.success("Service created successfully!");
 
-        console.log("res", res.data);
-
         router.push(`/${role}/manage-service`);
       } else if (res?.error) {
         message.error(res?.error?.data?.message);

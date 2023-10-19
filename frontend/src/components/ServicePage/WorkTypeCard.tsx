@@ -21,14 +21,12 @@ const WorkTypeCard = ({ item }: any) => {
 
   const [addToBooking, { isLoading }] = useAddToBookingMutation();
 
-  const today = new Date();
-
   const handleBookClick = () => {
     setModalVisible(true);
   };
 
   const loginUser = isLoggedIn();
-  const { userId } = getUserInfo() as any;
+  const { userId, role } = getUserInfo() as any;
 
   const handleConfirm = async (data: any) => {
     if (!selectedDate) {
@@ -77,10 +75,12 @@ const WorkTypeCard = ({ item }: any) => {
             </span>{" "}
           </p>
 
-          {loginUser ? (
+          {loginUser && role === "user" ? (
             <CustomButton onClick={handleBookClick}>Book</CustomButton>
           ) : (
-            <p className="text-red-500">*Please login for booking</p>
+            <p className="text-red-500">
+              *Please login as a Customer for booking
+            </p>
           )}
         </div>
       </Card>

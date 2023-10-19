@@ -10,18 +10,18 @@ import Link from "next/link";
 import { useState } from "react";
 import dayjs from "dayjs";
 import { useDebounced } from "@/redux/hook";
-import {
-  useDeleteServiceMutation,
-  useGetAllServicesQuery,
-} from "@/redux/api/serviceApi";
 import ActionBar from "@/components/ui/ActionBar";
 import DataTable from "@/components/ui/DataTable";
 import HSBreadCrumb from "@/components/ui/HSBreadCrumb";
 import CustomModal from "@/components/ui/CustomModal";
 import CustomButton from "@/components/ui/CustomButton";
 import { getUserInfo } from "@/services/auth.service";
+import {
+  useDeleteBookingMutation,
+  useGetAllBookingsQuery,
+} from "@/redux/api/bookingApi";
 
-const ManageServicePage = () => {
+const ManageBookingPage = () => {
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -30,9 +30,9 @@ const ManageServicePage = () => {
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [serviceId, setServiceId] = useState<string>("");
+  const [bookingId, setBookingId] = useState<string>("");
 
-  const [deleteService] = useDeleteServiceMutation();
+  const [deleteBooking] = useDeleteBookingMutation();
 
   const { role } = getUserInfo() as any;
 
@@ -50,17 +50,17 @@ const ManageServicePage = () => {
   if (!!debouncedTerm) {
     query["searchTerm"] = debouncedTerm;
   }
-  const { data, isLoading } = useGetAllServicesQuery({ ...query });
+  const { data, isLoading } = useGetAllBookingsQuery({ ...query });
 
-  const servicesData = data?.data;
+  const bookingData = data?.data;
   const meta = data?.meta;
 
   const deleteHandler = async (id: string) => {
     message.loading("Deleting.....");
     try {
-      const res: any = await deleteService(id);
+      const res: any = await deleteBooking(id);
       if (!!res?.data) {
-        message.success("Service Deleted successfully");
+        message.success("Booking Cancelled");
 
         setDeleteModal(false);
       } else {
@@ -73,28 +73,31 @@ const ManageServicePage = () => {
 
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
-    },
-    {
-      title: "WorkTypes(total)",
-      dataIndex: "workTypes",
+      title: "Items",
+      dataIndex: "workType",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return <div>{data?.title}</div>;
       },
     },
     {
-      title: "Booking",
-      dataIndex: "booking",
+      title: "Price",
+      dataIndex: "workType",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return <div>{data?.price}</div>;
       },
     },
     {
-      title: "Reviews",
-      dataIndex: "reviews",
+      title: "Booking Date",
+      dataIndex: "date",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return data && dayjs(data).format("MMM D, YYYY hh:mm A");
+      },
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: function (data: any) {
+        return <div>{data}</div>;
       },
     },
     {
@@ -111,25 +114,24 @@ const ManageServicePage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/${role}/manage-service/edit/${data}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
+            <Button
+              style={{
+                margin: "0px 5px",
+              }}
+              type="primary"
+            >
+              Edit
+            </Button>
+
             <Button
               onClick={() => {
                 setDeleteModal(true);
-                setServiceId(data);
+                setBookingId(data);
               }}
               type="primary"
               danger
             >
-              <DeleteOutlined />
+              Cancel
             </Button>
           </>
         );
@@ -159,16 +161,16 @@ const ManageServicePage = () => {
       <HSBreadCrumb
         items={[
           {
-            label: "admin",
-            link: "/admin",
+            label: "user",
+            link: "/user",
           },
           {
-            label: "manage-service",
-            link: "/admin/manage-service",
+            label: "booking-history",
+            link: "/user/booking-history",
           },
         ]}
       />
-      <ActionBar title={`Service List (${meta?.total})`}>
+      <ActionBar title={`Booking List (${meta?.total})`}>
         <Input
           type="text"
           size="large"
@@ -182,9 +184,6 @@ const ManageServicePage = () => {
           }}
         />
         <div>
-          <Link href="/admin/manage-service/create">
-            <CustomButton>Create</CustomButton>
-          </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
             <Button
               onClick={resetFilters}
@@ -200,7 +199,7 @@ const ManageServicePage = () => {
       <DataTable
         loading={isLoading}
         columns={columns}
-        dataSource={servicesData}
+        dataSource={bookingData}
         pageSize={size}
         totalPages={meta?.total}
         showSizeChanger={true}
@@ -210,15 +209,15 @@ const ManageServicePage = () => {
       />
 
       <CustomModal
-        title={`Remove Service`}
+        title={`Cancel Booking`}
         isOpen={deleteModal}
         closeModal={() => setDeleteModal(false)}
-        handleOk={() => deleteHandler(serviceId)}
+        handleOk={() => deleteHandler(bookingId)}
       >
-        <p className="my-5">Do you want to remove this service?</p>
+        <p className="my-5">Do you want to Cancel this booking?</p>
       </CustomModal>
     </div>
   );
 };
 
-export default ManageServicePage;
+export default ManageBookingPage;

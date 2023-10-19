@@ -2,6 +2,7 @@
 import {
   DeleteOutlined,
   EditOutlined,
+  FileImageOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
 
@@ -20,8 +21,13 @@ import HSBreadCrumb from "@/components/ui/HSBreadCrumb";
 import CustomModal from "@/components/ui/CustomModal";
 import CustomButton from "@/components/ui/CustomButton";
 import { getUserInfo } from "@/services/auth.service";
+import {
+  useDeleteWorkTypeMutation,
+  useGetAllTypesQuery,
+} from "@/redux/api/workTypeApi";
+import { useDeleteUserMutation, useGetAllUserQuery } from "@/redux/api/userApi";
 
-const ManageServicePage = () => {
+const ManageWorkTypePage = () => {
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -30,11 +36,11 @@ const ManageServicePage = () => {
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [serviceId, setServiceId] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
-  const [deleteService] = useDeleteServiceMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
-  const { role } = getUserInfo() as any;
+  const { role: loginRole } = getUserInfo() as any;
 
   query["limit"] = size;
   query["page"] = page;
@@ -50,17 +56,17 @@ const ManageServicePage = () => {
   if (!!debouncedTerm) {
     query["searchTerm"] = debouncedTerm;
   }
-  const { data, isLoading } = useGetAllServicesQuery({ ...query });
+  const { data, isLoading } = useGetAllUserQuery({ ...query });
 
-  const servicesData = data?.data;
+  const userData = data;
   const meta = data?.meta;
 
   const deleteHandler = async (id: string) => {
     message.loading("Deleting.....");
     try {
-      const res: any = await deleteService(id);
+      const res: any = await deleteUser(id);
       if (!!res?.data) {
-        message.success("Service Deleted successfully");
+        message.success("user Deleted successfully");
 
         setDeleteModal(false);
       } else {
@@ -71,30 +77,69 @@ const ManageServicePage = () => {
     }
   };
 
+  const buttonComponent = (id: any) => {
+    return (
+      <Button
+        onClick={() => {
+          setDeleteModal(true);
+          setUserId(id);
+        }}
+        type="primary"
+        danger
+      >
+        <DeleteOutlined />
+      </Button>
+    );
+  };
+
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
-    },
-    {
-      title: "WorkTypes(total)",
-      dataIndex: "workTypes",
+      title: "",
+      dataIndex: "profileImg",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return (
+          <div className="">
+            {!data ? (
+              <FileImageOutlined />
+            ) : (
+              <img className=" w-6 h-6" src={data} alt="img" />
+            )}
+          </div>
+        );
       },
     },
     {
-      title: "Booking",
-      dataIndex: "booking",
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return <div className="">{data}</div>;
       },
     },
     {
-      title: "Reviews",
-      dataIndex: "reviews",
+      title: "ContactNo",
+      dataIndex: "contactNo",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return <div className="">{data}</div>;
+      },
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      render: function (data: any) {
+        return <div className="">{data}</div>;
+      },
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      render: function (data: any) {
+        return (
+          <div className="">{data === "user" ? <p>customer</p> : data}</div>
+        );
       },
     },
     {
@@ -106,31 +151,41 @@ const ManageServicePage = () => {
       sorter: true,
     },
     {
-      title: "Action",
-      dataIndex: "id",
+      title: "",
+      dataIndex: "role",
       render: function (data: any) {
         return (
           <>
-            <Link href={`/${role}/manage-service/edit/${data}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
-            <Button
-              onClick={() => {
-                setDeleteModal(true);
-                setServiceId(data);
-              }}
-              type="primary"
-              danger
-            >
-              <DeleteOutlined />
-            </Button>
+            <div>
+              {data === "admin" ? (
+                <Button className="bg-yellow-500 font-semibold">
+                  make customer
+                </Button>
+              ) : data === "user" ? (
+                <Button className="bg-green-500 font-semibold text-white">
+                  make admin
+                </Button>
+              ) : loginRole === "super_admin" && data === "super_admin" ? (
+                <div>
+                  <Button type="primary"> make admin </Button>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      title: "",
+      dataIndex: "id",
+      render: function (id: any, rowData: any) {
+        return (
+          <>
+            {loginRole !== "super_admin" && rowData.role === "super_admin"
+              ? ""
+              : buttonComponent(id)}
           </>
         );
       },
@@ -163,12 +218,12 @@ const ManageServicePage = () => {
             link: "/admin",
           },
           {
-            label: "manage-service",
-            link: "/admin/manage-service",
+            label: "manage-user",
+            link: "/admin/manage-user",
           },
         ]}
       />
-      <ActionBar title={`Service List (${meta?.total})`}>
+      <ActionBar title={`User List (${userData?.length})`}>
         <Input
           type="text"
           size="large"
@@ -182,7 +237,7 @@ const ManageServicePage = () => {
           }}
         />
         <div>
-          <Link href="/admin/manage-service/create">
+          <Link href="">
             <CustomButton>Create</CustomButton>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
@@ -200,7 +255,7 @@ const ManageServicePage = () => {
       <DataTable
         loading={isLoading}
         columns={columns}
-        dataSource={servicesData}
+        dataSource={userData}
         pageSize={size}
         totalPages={meta?.total}
         showSizeChanger={true}
@@ -213,12 +268,12 @@ const ManageServicePage = () => {
         title={`Remove Service`}
         isOpen={deleteModal}
         closeModal={() => setDeleteModal(false)}
-        handleOk={() => deleteHandler(serviceId)}
+        handleOk={() => deleteHandler(userId)}
       >
-        <p className="my-5">Do you want to remove this service?</p>
+        <p className="my-5">Do you want to remove this User?</p>
       </CustomModal>
     </div>
   );
 };
 
-export default ManageServicePage;
+export default ManageWorkTypePage;
