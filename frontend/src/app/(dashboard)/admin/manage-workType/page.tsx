@@ -2,6 +2,7 @@
 import {
   DeleteOutlined,
   EditOutlined,
+  FileImageOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
 
@@ -20,8 +21,12 @@ import HSBreadCrumb from "@/components/ui/HSBreadCrumb";
 import CustomModal from "@/components/ui/CustomModal";
 import CustomButton from "@/components/ui/CustomButton";
 import { getUserInfo } from "@/services/auth.service";
+import {
+  useDeleteWorkTypeMutation,
+  useGetAllTypesQuery,
+} from "@/redux/api/workTypeApi";
 
-const ManageServicePage = () => {
+const ManageWorkTypePage = () => {
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -30,9 +35,9 @@ const ManageServicePage = () => {
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [serviceId, setServiceId] = useState<string>("");
+  const [workTypeId, setWorkTypeId] = useState<string>("");
 
-  const [deleteService] = useDeleteServiceMutation();
+  const [deleteWorkType] = useDeleteWorkTypeMutation();
 
   const { role } = getUserInfo() as any;
 
@@ -50,18 +55,17 @@ const ManageServicePage = () => {
   if (!!debouncedTerm) {
     query["searchTerm"] = debouncedTerm;
   }
-  const { data, isLoading } = useGetAllServicesQuery({ ...query });
+  const { data, isLoading } = useGetAllTypesQuery({ ...query });
 
-  const servicesData = data?.data;
+  const workTypeData = data?.data;
   const meta = data?.meta;
 
   const deleteHandler = async (id: string) => {
     message.loading("Deleting.....");
     try {
-      console.log(id);
-      const res: any = await deleteService(id);
+      const res: any = await deleteWorkType(id);
       if (!!res?.data) {
-        message.success("Service Deleted successfully");
+        message.success("workType Deleted successfully");
 
         setDeleteModal(false);
       } else {
@@ -74,28 +78,50 @@ const ManageServicePage = () => {
 
   const columns = [
     {
+      title: "",
+      dataIndex: "images",
+      render: function (data: any) {
+        return (
+          <div className="">
+            {!data[0] ? (
+              <FileImageOutlined />
+            ) : (
+              <img className=" w-6 h-6" src={data[0]} alt="img" />
+            )}
+          </div>
+        );
+      },
+    },
+    {
       title: "Title",
       dataIndex: "title",
     },
     {
-      title: "WorkTypes(total)",
-      dataIndex: "workTypes",
+      title: "Service",
+      dataIndex: "service",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return <div className="text-center">{data?.title}</div>;
+      },
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      render: function (data: any) {
+        return <div className="text-center">{data}</div>;
       },
     },
     {
       title: "Booking",
       dataIndex: "booking",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return <div className="text-center">{data?.length}</div>;
       },
     },
     {
       title: "Reviews",
       dataIndex: "reviews",
       render: function (data: any) {
-        return <div className="ml-8">{data?.length}</div>;
+        return <div className="text-center">{data?.length}</div>;
       },
     },
     {
@@ -112,12 +138,11 @@ const ManageServicePage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/${role}/manage-service/edit/${data}`}>
+            <Link href={`/${role}/manage-workType/edit/${data}`}>
               <Button
                 style={{
                   margin: "0px 5px",
                 }}
-                onClick={() => console.log(data)}
                 type="primary"
               >
                 <EditOutlined />
@@ -126,7 +151,7 @@ const ManageServicePage = () => {
             <Button
               onClick={() => {
                 setDeleteModal(true);
-                setServiceId(data);
+                setWorkTypeId(data);
               }}
               type="primary"
               danger
@@ -166,12 +191,12 @@ const ManageServicePage = () => {
             link: "/admin",
           },
           {
-            label: "manage-service",
-            link: "/admin/manage-service",
+            label: "manage-workType",
+            link: "/admin/manage-workType",
           },
         ]}
       />
-      <ActionBar title={`Service List (${meta?.total})`}>
+      <ActionBar title={`WorkType List (${meta?.total})`}>
         <Input
           type="text"
           size="large"
@@ -185,7 +210,7 @@ const ManageServicePage = () => {
           }}
         />
         <div>
-          <Link href="/admin/manage-service/create">
+          <Link href="/admin/manage-workType/create">
             <CustomButton>Create</CustomButton>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (
@@ -203,7 +228,7 @@ const ManageServicePage = () => {
       <DataTable
         loading={isLoading}
         columns={columns}
-        dataSource={servicesData}
+        dataSource={workTypeData}
         pageSize={size}
         totalPages={meta?.total}
         showSizeChanger={true}
@@ -216,12 +241,12 @@ const ManageServicePage = () => {
         title={`Remove Service`}
         isOpen={deleteModal}
         closeModal={() => setDeleteModal(false)}
-        handleOk={() => deleteHandler(serviceId)}
+        handleOk={() => deleteHandler(workTypeId)}
       >
-        <p className="my-5">Do you want to remove this service?</p>
+        <p className="my-5">Do you want to remove this WorkTYpe?</p>
       </CustomModal>
     </div>
   );
 };
 
-export default ManageServicePage;
+export default ManageWorkTypePage;

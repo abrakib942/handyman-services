@@ -56,6 +56,10 @@ const ServiceCreatePage = () => {
             label: "manage-service",
             link: "/admin/manage-service",
           },
+          {
+            label: "create",
+            link: "/admin/manage-service/create",
+          },
         ]}
       />
       <h1>Create Service</h1>

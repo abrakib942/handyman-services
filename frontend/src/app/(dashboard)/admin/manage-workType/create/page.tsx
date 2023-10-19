@@ -4,15 +4,17 @@ import Loading from "@/app/Loading";
 import CustomForm from "@/components/form/CustomForm";
 import FormDatePicker from "@/components/form/FormDatePicker";
 import FormInput from "@/components/form/FormInput";
+import FormSelectField from "@/components/form/FormSelectField";
 import FormTextArea from "@/components/form/FormTextArea";
 import CustomButton from "@/components/ui/CustomButton";
 import HSBreadCrumb from "@/components/ui/HSBreadCrumb";
 import {
   useCreateServiceMutation,
-  useGetSingleServiceQuery,
-  useUpdateServiceMutation,
+  useGetAllServicesQuery,
 } from "@/redux/api/serviceApi";
+import { useCreateWorkTypeMutation } from "@/redux/api/workTypeApi";
 import { createServiceSchema } from "@/schemas/service";
+import { createWorkTypeSchema } from "@/schemas/workType";
 import { getUserInfo } from "@/services/auth.service";
 import { FileImageOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,26 +22,33 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Card, Col, Row, message } from "antd";
 import { useRouter } from "next/navigation";
 
-const EditServicePage = ({ params }: any) => {
-  const [updateService, { isLoading }] = useUpdateServiceMutation();
+const ServiceCreatePage = () => {
+  const [createWorkType, { isLoading }] = useCreateWorkTypeMutation();
 
-  const { data } = useGetSingleServiceQuery(params?.id);
-
-  console.log("sing", data);
+  const { data } = useGetAllServicesQuery({ limit: 100, page: 1 });
 
   const { role } = getUserInfo() as any;
 
   const router = useRouter();
 
+  const serviceData = data?.data;
+
+  const serviceOptions = serviceData?.map((service: any) => {
+    return {
+      label: service?.title,
+      value: service?.id,
+    };
+  });
+
   const onSubmit = async (data: any) => {
     try {
-      const res: any = await updateService({ id: params?.id, data: data });
+      const res: any = await createWorkType({ ...data });
       if (res?.data) {
-        message.success("Service updated successfully!");
+        message.success("Work Type created successfully!");
 
-        router.push(`/${role}/manage-service`);
+        router.push(`/${role}/manage-workType`);
       } else if (res?.error) {
-        message.error(res?.error?.data?.message);
+        message.error("Failed to Create. Error:", res?.error?.data?.message);
       }
     } catch (err: any) {
       console.error(err.message);
@@ -50,12 +59,6 @@ const EditServicePage = ({ params }: any) => {
     return <Loading />;
   }
 
-  const defaultValues = {
-    title: data?.title || "",
-    heading: data?.heading || "",
-    description: data?.description || "",
-  };
-
   return (
     <div>
       <HSBreadCrumb
@@ -65,22 +68,21 @@ const EditServicePage = ({ params }: any) => {
             link: "/admin",
           },
           {
-            label: "manage-service",
-            link: "/admin/manage-service",
+            label: "manage-workType",
+            link: "/admin/manage-workType",
           },
           {
-            label: "edit",
-            link: "/admin/manage-service/edit",
+            label: "create",
+            link: "/admin/manage-workType/create",
           },
         ]}
       />
-      <h1>Edit Service : {data?.title} </h1>
+      <h1>Create Service</h1>
 
       <div>
         <CustomForm
           submitHandler={onSubmit}
-          defaultValues={defaultValues}
-          resolver={yupResolver(createServiceSchema)}
+          resolver={yupResolver(createWorkTypeSchema)}
         >
           <div
             style={{
@@ -110,7 +112,8 @@ const EditServicePage = ({ params }: any) => {
                   type="text"
                   name="title"
                   size="large"
-                  label="Service Name"
+                  label="WorkType Name"
+                  required
                 />
               </Col>
               <Col
@@ -121,10 +124,11 @@ const EditServicePage = ({ params }: any) => {
                 }}
               >
                 <FormInput
-                  type="text"
-                  name="heading"
+                  type="number"
+                  name="price"
                   size="large"
-                  label="heading"
+                  label="Price"
+                  required
                 />
               </Col>
               <Col
@@ -134,7 +138,25 @@ const EditServicePage = ({ params }: any) => {
                   marginBottom: "10px",
                 }}
               >
-                <FormTextArea name="description" label="Description" />
+                <FormTextArea required name="description" label="Description" />
+              </Col>
+
+              <Col
+                className="gutter-row"
+                span={8}
+                style={{
+                  marginBottom: "10px",
+                }}
+              >
+                <FormSelectField
+                  name="serviceId"
+                  size="large"
+                  label="Select Service"
+                  options={serviceOptions}
+                  placeholder="Select"
+                  showSearch
+                  required
+                />
               </Col>
 
               <Col
@@ -163,4 +185,4 @@ const EditServicePage = ({ params }: any) => {
   );
 };
 
-export default EditServicePage;
+export default ServiceCreatePage;
