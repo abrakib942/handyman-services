@@ -39,13 +39,20 @@ const ProfileEditForm = ({ userData, userId }: any) => {
     return <Loading />;
   }
 
+  const defaultValues = {
+    name: userData?.name || "",
+    email: userData?.email || "",
+    address: userData?.address || "",
+    contactNo: userData?.contactNo || "",
+  };
+
   return (
     <div>
       <div className="md:ml-10  bg-white p-10 ">
         <p className="text-gray-500 text-center  font-bold text-[15px] ">
           Update your Information
         </p>
-        <CustomForm submitHandler={onSubmit}>
+        <CustomForm submitHandler={onSubmit} defaultValues={defaultValues}>
           <div className="text-[#777777] ">
             <div className="flex items-center">
               <div className="w-full md:w-1/2 p-2">
@@ -53,7 +60,6 @@ const ProfileEditForm = ({ userData, userId }: any) => {
                   name="name"
                   type="text"
                   size="large"
-                  placeholder={userData?.name}
                   label="Full Name"
                 />
               </div>
@@ -63,7 +69,6 @@ const ProfileEditForm = ({ userData, userId }: any) => {
                   name="email"
                   type="email"
                   size="large"
-                  placeholder={userData?.email}
                   label="Email"
                 />
               </div>
@@ -75,7 +80,6 @@ const ProfileEditForm = ({ userData, userId }: any) => {
                   name="address"
                   type="text"
                   size="large"
-                  placeholder={userData?.address}
                   label="Address"
                 />
               </div>
@@ -83,7 +87,6 @@ const ProfileEditForm = ({ userData, userId }: any) => {
                 <FormInput
                   name="contactNo"
                   type="text"
-                  placeholder={userData?.contactNo}
                   size="large"
                   label="Contact No"
                 />
