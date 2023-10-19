@@ -1,9 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Prisma, Service } from '@prisma/client';
 import prisma from '../../../shared/prisma';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 
-const createService = (serviceData: Service): Promise<Service> => {
+const createService = async (serviceData: Service): Promise<Service> => {
+  // const existingService = await prisma.service.findFirst({
+  //   where: {
+  //     title: serviceData.title,
+  //   },
+  // });
+
+  // if (existingService) {
+  //   throw new ApiError(
+  //     httpStatus.BAD_REQUEST,
+  //     'Service with this title already exists.'
+  //   );
+  // }
+
   const result = prisma.service.create({
     data: serviceData,
   });

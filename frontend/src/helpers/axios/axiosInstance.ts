@@ -28,7 +28,7 @@ instance.interceptors.request.use(
 //@ts-ignore
 instance.interceptors.response.use(
   function (response) {
-    const responseObject: ResponseSuccessType = {
+    const responseObject: any = {
       data: response?.data?.data,
       meta: response?.data?.meta,
     };

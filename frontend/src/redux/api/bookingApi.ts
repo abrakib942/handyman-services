@@ -1,3 +1,4 @@
+import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 export const bookingApi = baseApi.injectEndpoints({
@@ -8,14 +9,14 @@ export const bookingApi = baseApi.injectEndpoints({
         params: arg,
         method: "GET",
       }),
-      providesTags: ["addToBook"],
+      providesTags: [tagTypes.booking],
     }),
     getSingleBooking: build.query({
       query: (id) => ({
         url: `/booking/${id}`,
         method: "GET",
       }),
-      providesTags: ["addToBook"],
+      providesTags: [tagTypes.booking],
     }),
     addToBooking: build.mutation({
       query: (data) => ({
@@ -23,7 +24,7 @@ export const bookingApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["addToBook"],
+      invalidatesTags: [tagTypes.booking],
     }),
     updateBooking: build.mutation({
       query: (data) => ({
@@ -31,14 +32,14 @@ export const bookingApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.data,
       }),
-      invalidatesTags: ["addToBook"],
+      invalidatesTags: [tagTypes.booking],
     }),
     deleteBooking: build.mutation({
       query: (id) => ({
         url: `/booking/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["addToBook"],
+      invalidatesTags: [tagTypes.booking],
     }),
   }),
 });

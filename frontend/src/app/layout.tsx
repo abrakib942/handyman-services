@@ -1,7 +1,7 @@
 import Providers from "@/lib/Providers";
 import "./globals.css";
-import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import type { Metadata } from "next";
 
 // const inter = Inter({ subsets: ["latin"] });
 

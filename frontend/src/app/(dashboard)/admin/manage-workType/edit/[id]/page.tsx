@@ -187,7 +187,7 @@ const EditServicePage = ({ params }: any) => {
             </Row>
           </div>
 
-          <CustomButton htmlType="submit">Create</CustomButton>
+          <CustomButton htmlType="submit">Edit</CustomButton>
         </CustomForm>
       </div>
     </div>

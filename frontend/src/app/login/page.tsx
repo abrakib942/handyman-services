@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import type { Metadata } from "next";
 import { SubmitHandler } from "react-hook-form";
 import { Col, Row, message } from "antd";
 import Image from "next/image";
@@ -17,9 +16,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { storeUserInfo } from "@/services/auth.service";
 
-export const metaData: Metadata = {
-  title: "Handyman | Login",
-};
+// export const metaData: Metadata = {
+//   title: "Handyman | Login",
+// };
 
 type FormValues = {
   email: string;
