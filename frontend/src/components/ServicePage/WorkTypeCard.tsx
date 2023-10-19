@@ -100,13 +100,6 @@ const WorkTypeCard = ({ item }: any) => {
             onChange={(date: any) => setSelectedDate(date)}
           />
         </div>
-        {/* <div style={{ marginTop: "10px" }}>
-          <label className="mr-2">Select Time:</label>
-          <TimePicker
-            value={selectedTime}
-            onChange={(time: any) => setSelectedTime(time)}
-          />
-        </div> */}
         <div style={{ marginTop: "10px" }}>
           <label className="mr-2">Price:</label>
           <InputNumber

@@ -5,7 +5,7 @@ import {
   ReloadOutlined,
 } from "@ant-design/icons";
 
-import { Button, Input, message } from "antd";
+import { Button, DatePicker, Input, InputNumber, Modal, message } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -19,6 +19,7 @@ import { getUserInfo } from "@/services/auth.service";
 import {
   useDeleteBookingMutation,
   useGetAllBookingsQuery,
+  useUpdateBookingMutation,
 } from "@/redux/api/bookingApi";
 
 const ManageBookingPage = () => {
@@ -31,6 +32,8 @@ const ManageBookingPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [bookingId, setBookingId] = useState<string>("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [deleteBooking] = useDeleteBookingMutation();
 
@@ -52,6 +55,8 @@ const ManageBookingPage = () => {
   }
   const { data, isLoading } = useGetAllBookingsQuery({ ...query });
 
+  const [updateBooking] = useUpdateBookingMutation();
+
   const bookingData = data?.data;
   const meta = data?.meta;
 
@@ -68,6 +73,27 @@ const ManageBookingPage = () => {
       }
     } catch (err: any) {
       console.error(err.message);
+    }
+  };
+
+  const handleEditClick = () => {
+    setModalVisible(true);
+  };
+
+  const handleConfirm = async (data: any) => {
+    try {
+      const res: any = await updateBooking({ ...data });
+      message.loading("updating.....");
+
+      if (res?.data) {
+        setTimeout(() => {
+          message.success("Booking updated successfully");
+        }, 2000);
+
+        setModalVisible(false);
+      }
+    } catch (err: any) {
+      message.error("Failed to upate booking");
     }
   };
 
@@ -111,10 +137,12 @@ const ManageBookingPage = () => {
     {
       title: "Action",
       dataIndex: "id",
-      render: function (data: any) {
+      render: function (data: any, rowData: any) {
+        console.log("rww", rowData);
         return (
           <>
             <Button
+              onClick={handleEditClick}
               style={{
                 margin: "0px 5px",
               }}
@@ -216,6 +244,23 @@ const ManageBookingPage = () => {
       >
         <p className="my-5">Do you want to Cancel this booking?</p>
       </CustomModal>
+
+      <Modal
+        title={`Edit Booking Date`}
+        open={modalVisible}
+        onOk={handleConfirm}
+        onCancel={() => setModalVisible(false)}
+      >
+        <div>
+          <label className="mr-2">Select Date and Time:</label>
+          <DatePicker
+            value={selectedDate}
+            format="YYYY-MM-DD HH:mm"
+            showTime={{ format: "HH:mm" }}
+            onChange={(date: any) => setSelectedDate(date)}
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
