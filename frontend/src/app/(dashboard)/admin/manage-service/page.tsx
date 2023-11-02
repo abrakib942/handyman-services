@@ -111,7 +111,7 @@ const ManageServicePage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/${role}/manage-service/edit/${data}`}>
+            <Link href={`/admin/manage-service/edit/${data}`}>
               <Button
                 style={{
                   margin: "0px 5px",
@@ -121,16 +121,22 @@ const ManageServicePage = () => {
                 <EditOutlined />
               </Button>
             </Link>
-            <Button
-              onClick={() => {
-                setDeleteModal(true);
-                setServiceId(data);
-              }}
-              type="primary"
-              danger
-            >
-              <DeleteOutlined />
-            </Button>
+            {role === "super_admin" ? (
+              <Button
+                onClick={() => {
+                  setDeleteModal(true);
+                  setServiceId(data);
+                }}
+                type="primary"
+                danger
+              >
+                <DeleteOutlined />
+              </Button>
+            ) : (
+              <Button disabled type="primary" danger>
+                <DeleteOutlined />
+              </Button>
+            )}
           </>
         );
       },

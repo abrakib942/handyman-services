@@ -138,7 +138,7 @@ const ManageWorkTypePage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/${role}/manage-workType/edit/${data}`}>
+            <Link href={`/admin/manage-workType/edit/${data}`}>
               <Button
                 style={{
                   margin: "0px 5px",
@@ -148,16 +148,22 @@ const ManageWorkTypePage = () => {
                 <EditOutlined />
               </Button>
             </Link>
-            <Button
-              onClick={() => {
-                setDeleteModal(true);
-                setWorkTypeId(data);
-              }}
-              type="primary"
-              danger
-            >
-              <DeleteOutlined />
-            </Button>
+            {role === "super_admin" ? (
+              <Button
+                onClick={() => {
+                  setDeleteModal(true);
+                  setWorkTypeId(data);
+                }}
+                type="primary"
+                danger
+              >
+                <DeleteOutlined />
+              </Button>
+            ) : (
+              <Button disabled type="primary" danger>
+                <DeleteOutlined />
+              </Button>
+            )}
           </>
         );
       },

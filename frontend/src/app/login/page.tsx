@@ -2,7 +2,7 @@
 "use client";
 
 import { SubmitHandler } from "react-hook-form";
-import { Col, Row, message } from "antd";
+import { Card, Col, Row, message } from "antd";
 import Image from "next/image";
 import CustomForm from "@/components/form/CustomForm";
 import FormInput from "@/components/form/FormInput";
@@ -72,6 +72,11 @@ const Login = () => {
       }}
     >
       <Col sm={12} md={16} lg={10}>
+        <Card className="w-1/2 h-1/2 flex flex-col gap-0" hoverable>
+          <p className="font-bold">admin Credential:</p>
+          <p>Email: admin@gmail.com </p>
+          <p>pass: 123456</p>
+        </Card>
         <Image src={loginImage} width={400} alt="login image" />
       </Col>
       <Col sm={12} md={8} lg={8}>
