@@ -12,6 +12,7 @@ import { getUserInfo, isLoggedIn } from "@/services/auth.service";
 import { useAddToBookingMutation } from "@/redux/api/bookingApi";
 import Loading from "@/app/Loading";
 import dayjs from "dayjs";
+import cardImg from "@/assets/Handyman-Service.jpg";
 
 const WorkTypeCard = ({ item }: any) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -63,7 +64,13 @@ const WorkTypeCard = ({ item }: any) => {
       <Card
         hoverable
         style={{ width: 250 }}
-        cover={<img alt="" height={200} src={item.images[0]} />}
+        cover={
+          <img
+            height={200}
+            src="https://www.jasspaintingservices.com.au/wp-content/uploads/2020/11/Handyman-Service-service-detail-img.jpg"
+            alt=""
+          />
+        }
       >
         <div>
           <p className="text-[16px]">{item.title}</p>
