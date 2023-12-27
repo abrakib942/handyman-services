@@ -21,6 +21,8 @@ import {
   useGetAllBookingsQuery,
   useUpdateBookingMutation,
 } from "@/redux/api/bookingApi";
+import { useGetAllUserQuery } from "@/redux/api/userApi";
+import CustomChip from "@/components/ui/CustomChip";
 
 const ManageBookingPage = () => {
   const query: Record<string, any> = {};
@@ -37,7 +39,7 @@ const ManageBookingPage = () => {
 
   const [deleteBooking] = useDeleteBookingMutation();
 
-  const { role } = getUserInfo() as any;
+  const { role, userId } = getUserInfo() as any;
 
   query["limit"] = size;
   query["page"] = page;
@@ -57,8 +59,11 @@ const ManageBookingPage = () => {
 
   const [updateBooking] = useUpdateBookingMutation();
 
-  const bookingData = data?.data;
+  let bookingData = data?.data;
   const meta = data?.meta;
+
+  bookingData =
+    bookingData?.filter((book: any) => book.userId === userId) || [];
 
   const deleteHandler = async (id: string) => {
     message.loading("Deleting.....");
@@ -123,7 +128,11 @@ const ManageBookingPage = () => {
       title: "Status",
       dataIndex: "status",
       render: function (data: any) {
-        return <div>{data}</div>;
+        return (
+          <div>
+            <CustomChip label={data} />
+          </div>
+        );
       },
     },
     {
@@ -138,7 +147,6 @@ const ManageBookingPage = () => {
       title: "Action",
       dataIndex: "id",
       render: function (data: any, rowData: any) {
-        console.log("rww", rowData);
         return (
           <>
             <Button
@@ -198,7 +206,7 @@ const ManageBookingPage = () => {
           },
         ]}
       />
-      <ActionBar title={`Booking List (${meta?.total})`}>
+      <ActionBar title={`Booking List (${bookingData.length})`}>
         <Input
           type="text"
           size="large"
