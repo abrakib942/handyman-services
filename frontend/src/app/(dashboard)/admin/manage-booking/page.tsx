@@ -1,5 +1,7 @@
 "use client";
 import {
+  CheckOutlined,
+  CloseOutlined,
   DeleteOutlined,
   EditOutlined,
   ReloadOutlined,
@@ -20,6 +22,7 @@ import {
   useGetAllBookingsQuery,
   useUpdateBookingMutation,
 } from "@/redux/api/bookingApi";
+import CustomChip from "@/components/ui/CustomChip";
 
 const ManageBookingPage = () => {
   const query: Record<string, any> = {};
@@ -60,6 +63,31 @@ const ManageBookingPage = () => {
   const confirmHandler = async (id: string) => {
     message.loading("cancelling.....");
     try {
+      const cancelledBooking = await updateBooking({
+        id,
+        data: { status: "cancelled" },
+      });
+
+      if (cancelledBooking) {
+        message.success("Booking Cancelled");
+        setDeleteModal(false);
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
+  const handleConfirmClick = async (id: string) => {
+    message.loading("confirming.....");
+    try {
+      const confirmedBooking = await updateBooking({
+        id,
+        data: { status: "confirmed" },
+      });
+
+      if (confirmedBooking) {
+        message.success("Booking Confirmed");
+      }
     } catch (err: any) {
       console.error(err.message);
     }
@@ -98,7 +126,11 @@ const ManageBookingPage = () => {
       title: "Status",
       dataIndex: "status",
       render: function (data: any) {
-        return <div>{data}</div>;
+        return (
+          <div>
+            <CustomChip label={data} />
+          </div>
+        );
       },
     },
     {
@@ -114,14 +146,12 @@ const ManageBookingPage = () => {
       dataIndex: "id",
       render: function (data: any, rowData: any) {
         return (
-          <>
+          <div className="flex flex-row gap-1">
             <Button
-              style={{
-                margin: "0px 5px",
-              }}
-              type="primary"
+              className="bg-[#91FE87]"
+              onClick={() => handleConfirmClick(data)}
             >
-              Confirm
+              <CheckOutlined />
             </Button>
 
             <Button
@@ -129,12 +159,11 @@ const ManageBookingPage = () => {
                 setDeleteModal(true);
                 setBookingId(data);
               }}
-              type="primary"
               danger
             >
-              Cancel
+              <CloseOutlined />
             </Button>
-          </>
+          </div>
         );
       },
     },
