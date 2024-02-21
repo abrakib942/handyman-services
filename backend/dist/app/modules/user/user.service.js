@@ -17,7 +17,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.default.user.findMany({});
+    const result = yield prisma_1.default.user.findMany({ include: { booking: true } });
     return result;
 });
 const getAUser = (id) => __awaiter(void 0, void 0, void 0, function* () {

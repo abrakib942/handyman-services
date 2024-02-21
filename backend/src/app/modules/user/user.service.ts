@@ -5,7 +5,7 @@ import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
 
 const getAllUsers = async () => {
-  const result = await prisma.user.findMany({});
+  const result = await prisma.user.findMany({include: {booking:true}});
 
   return result;
 };
