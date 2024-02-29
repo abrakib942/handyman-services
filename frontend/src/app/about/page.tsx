@@ -7,7 +7,7 @@ import React from "react";
 const AboutPage = () => {
   return (
     <div className="text-center">
-      <p className="font-bold text-center mt-16"> upcoming...</p>
+      <p className="font-bold text-center mt-16"> upcoming....</p>
       <Link href="/">
         <CustomButton>Back</CustomButton>
       </Link>

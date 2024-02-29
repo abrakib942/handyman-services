@@ -65,7 +65,7 @@ const loginuser = async (data: any): Promise<any> => {
       role: isUserExist?.role,
     },
     config.jwt.secret as Secret,
-    config.jwt.refresh_expires_in as string
+    config.jwt.expires_in as string
   );
 
   const refreshToken = jwtHelpers.createToken(
